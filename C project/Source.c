@@ -15,6 +15,19 @@ struct Doctor
     float charge;
 };
 
+struct Doctor *doctor_list = NULL;
+int num_doctors = 0;              
+
+void load_dataaaaaaa(){
+    FILE *fp;
+    struct Doctor doc;
+    
+    fp = fopen("doctor.dat")
+
+}
+
+
+
 void Doctor(int i)
 {
     switch (i)
@@ -181,7 +194,7 @@ int main()
                         printf("Error opening file!");
                         return 0;
                     }
-printf("ID      Name    Age     Gender\n");
+                    printf("ID      Name    Age     Gender\n");
                     while (fread(&p, sizeof(struct Patients), 1, fp))
                     {
                         printf("%d\t%s\t%d\t%s\n", p.id, p.name, p.age, (p.gender == 1 ? "Male" : p.gender == 2 ? "Female"
