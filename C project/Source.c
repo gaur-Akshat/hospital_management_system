@@ -404,7 +404,6 @@ int main()
                                                                                                                                                                                        : "Other",
                                patient_list[i].medical_notes);
                     }
-                    fclose(fp);
                     break;
 
                 case 3:
