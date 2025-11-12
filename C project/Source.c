@@ -130,7 +130,7 @@ void Doctor(int i)
                 {
                     if (doctor_list[i].id == doct.id)
                     {
-                        printf("\n\nWrong Input, Try again");
+                        printf("\n\nId Duplicate, Try again");
                         foo = 1;
                         break;
                     }
@@ -232,7 +232,6 @@ void Doctor(int i)
                 sorrt();
             strcpy(str, doctor_list[0].specialisation);
             printf("%s:\n", str);
-            speciaaa = 1;
             for (int i = 0; i < num_doctors; i++)
             {
                 if (strcmp(str, doctor_list[i].specialisation) == 0)
@@ -245,7 +244,6 @@ void Doctor(int i)
                     strcpy(str, doctor_list[i].specialisation);
                     printf("%s:\n", str);
                     i--;
-                    speciaaa++;
                 }
             }
         }
@@ -263,6 +261,9 @@ void Doctor(int i)
 void Patient()
 {
     int b, id;
+    char str[50];
+    char **ptr = NULL;
+
     printf("\n\nEnter 1 for: Patient Register\nEnter 2 for: Patient Login\nEnter anything else: To go back");
 
     scanf("%d", &b);
@@ -281,7 +282,7 @@ void Patient()
             {
                 if (patient_list[i].id == patient_list[num_patient - 1].id)
                 {
-                    printf("\n\nWrong Input, Try again");
+                    printf("\n\nId Duplicate, Try again");
                     foo = 1;
                     break;
                 }
@@ -318,6 +319,40 @@ void Patient()
     else
     {
         return;
+    }
+    if (doctor_list != NULL)
+    {
+        if (sor_t == 0)
+            sorrt();
+        speciaaa = 1;
+        ptr = realloc(ptr, speciaaa * sizeof(char[50]));
+        strcpy(ptr + (speciaaa - 1), doctor_list[0].specialisation);
+
+        for (int i = 0; i < num_doctors; i++)
+        {
+            if (!(strcmp(str, doctor_list[i].specialisation) == 0))
+            {
+
+                speciaaa++;
+                ptr = realloc(ptr, speciaaa * sizeof(char[50]));
+                strcpy(ptr + (speciaaa - 1), doctor_list[i].specialisation);
+            }
+        }
+    }
+
+    printf("Enter any of the number to get assigned to that speciality Doctor");
+    int ahh;
+    while (1)
+    {
+        for (int i = 0; i < speciaaa; i++)
+            printf("%d for: %s", i+1, *(ptr + i));
+            scanf("%d",&ahh);
+            if(ahh>speciaaa){
+                printf("wrong input");
+                
+            continue;
+        }
+        break;
     }
 }
 
