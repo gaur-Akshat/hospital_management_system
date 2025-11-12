@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct Patients
+struct Patient
 {
     int id;
     char name[50];
@@ -18,20 +18,17 @@ struct Doctor
 };
 
 struct Doctor *doctor_list = NULL;
-int num_doctors = 0, sor_t = 0, speciaaa = 1;
+struct Patient *patient_list = NULL;
+int num_doctors = 0, num_patient = 0, sor_t = 0, speciaaa = 1;
 char pass[50];
 
 void load_dataaaaaaa()
 {
     FILE *fp;
     struct Doctor doc;
+    struct Patient pat;
 
     fp = fopen("doctor.dat", "rb");
-
-    if (doctor_list != NULL)
-    {
-        free(doctor_list);
-    }
 
     while (fread(&doc, sizeof(struct Doctor), 1, fp) == 1)
     {
@@ -41,23 +38,48 @@ void load_dataaaaaaa()
     }
 
     fclose(fp);
+
+    fp = fopen("patient.dat", "rb");
+
+    while (fread(&pat, sizeof(struct Patient), 1, fp) == 1)
+    {
+        num_patient++;
+        patient_list = realloc(patient_list, num_patient * sizeof(struct Patient));
+        patient_list[num_patient - 1] = pat;
+    }
+
+    fclose(fp);
 }
 void upload_dataaaaaaa()
 {
     FILE *fp;
     fp = fopen("doctor.dat", "wb");
-
     fwrite(doctor_list, sizeof(struct Doctor), num_doctors, fp);
+    fclose(fp);
 
+    fp = fopen("patient.dat", "wb");
+    fwrite(patient_list, sizeof(struct Patient), num_patient, fp);
     fclose(fp);
 }
-void clean()
+void clean(int which)
 {
     FILE *fp;
-    fp = fopen("doctor.dat", "wb");
-    fclose(fp);
-    free(doctor_list);
-    doctor_list = NULL;
+    if (which == 1)
+    {
+        fp = fopen("doctor.dat", "wb");
+        fclose(fp);
+        free(doctor_list);
+        doctor_list = NULL;
+        num_doctors=0;
+    }
+    else if (which == 2)
+    {
+        fp = fopen("patient.dat", "wb");
+        fclose(fp);
+        free(patient_list);
+        patient_list = NULL;
+        num_patient=0;
+    }
 }
 
 void sorrt()
@@ -141,7 +163,7 @@ void Doctor(int i)
             }
             if (ind != -1)
             {
-                printf("\n\n%d\t%s\t%s\t%f\n\n", doctor_list[i].id, doctor_list[i].name, doctor_list[i].specialisation, doctor_list[i].charge);
+                printf("\n\n%d\t%s\t%s\t%f\n\n", doctor_list[ind].id, doctor_list[ind].name, doctor_list[ind].specialisation, doctor_list[ind].charge);
 
                 doct.id = id;
 
@@ -184,7 +206,7 @@ void Doctor(int i)
                 if (num_doctors != 0)
                     doctor_list = realloc(doctor_list, num_doctors * sizeof(struct Doctor));
                 else
-                    clean();
+                    clean(1);
             }
             else
             {
@@ -196,6 +218,7 @@ void Doctor(int i)
             return;
         }
         printf("\n\nAdd/Edit/Remove Again?\n1:yes\nanything else:no");
+        
         scanf("%d", &i);
         if (i == 1)
             Doctor(1);
@@ -238,38 +261,45 @@ void Doctor(int i)
 
 void Patient()
 {
-    int b;
+    int b, id;
     printf("\n\nEnter 1 for: Patient Register\nEnter 2 for: Patient Login\nEnter anything else: To go back");
 
     scanf("%d", &b);
     if (b == 1)
     {
-        struct Patients s;
-
-        FILE *fp;
-        fp = fopen("patients.dat", "ab");
-        if (fp == NULL)
-        {
-            printf("Error opening file!");
-            return;
-        }
+        struct Patient s;
+        patient_list = realloc(patient_list, sizeof(struct Patient) * ++num_patient);
 
         printf("Enter ID: ");
-        scanf("%d", &s.id);
+        int foo = 1;
+        while (foo)
+        {
+            scanf("%d", &patient_list[num_patient - 1].id);
+            foo = 0;
+            for (int i = 0; i < num_patient - 1; i++)
+            {
+                if (patient_list[i].id == patient_list[num_patient - 1].id)
+                {
+                    printf("\n\nWrong Input, Try again");
+                    foo = 1;
+                    break;
+                }
+            }
+        }
 
         printf("Enter Name: ");
-        scanf("%s", s.name);
+        scanf("%s", patient_list[num_patient - 1].name);
 
         printf("Enter Age: ");
-        scanf("%d", &s.age);
+        scanf("%d", &patient_list[num_patient - 1].age);
 
         while (1)
         {
 
             printf("Enter Gender:\n1: Male\n2: Female\n3: Other");
-            scanf("%d", &s.gender);
+            scanf("%d", &patient_list[num_patient - 1].gender);
 
-            if (s.gender != 1 && s.gender != 2 && s.gender != 3)
+            if (patient_list[num_patient - 1].gender != 1 && patient_list[num_patient - 1].gender != 2 && patient_list[num_patient - 1].gender != 3)
             {
                 printf("\nwrong input\n");
                 continue;
@@ -277,8 +307,6 @@ void Patient()
 
             break;
         }
-        fwrite(&s, sizeof(s), 1, fp);
-        fclose(fp);
     }
     else if (b == 2)
     {
@@ -286,7 +314,7 @@ void Patient()
     }
     else
     {
-        printf("Wrong Input");
+        return;
     }
 }
 
@@ -321,7 +349,7 @@ int main()
             do
             {
                 flag = 0;
-                printf("\n\nEnter 1 for: Add/Edit/Delete doctor\nEnter 2 for: View all patients\nEnter 3 for: Maintain doctor specialization wise list\nEnter 4 for: Password reset\nEnter 5 for: Clean Files\nEnter anything else for: Go to previous options");
+                printf("\n\nEnter 1 for: Add/Edit/Delete doctor\nEnter 2 for: View all Patient\nEnter 3 for: Maintain doctor specialization wise list\nEnter 4 for: Password reset\nEnter 5 for: Clean Files\nEnter anything else for: Go to previous options");
 
                 scanf("%d", &c);
                 switch (c)
@@ -330,20 +358,13 @@ int main()
                     Doctor(1);
                     break;
                 case 2:
-                    struct Patients p;
-
-                    FILE *fp;
-                    fp = fopen("patients.dat", "rb");
-                    if (fp == NULL)
-                    {
-                        printf("Error opening file!");
-                        return 0;
-                    }
                     printf("\n\nID      Name    Age     Gender\n");
-                    while (fread(&p, sizeof(struct Patients), 1, fp))
+                    
+                    for (int i =0; i< num_patient;i++)
                     {
-                        printf("%d\t%s\t%d\t%s\n", p.id, p.name, p.age, (p.gender == 1 ? "Male" : p.gender == 2 ? "Female"
-                                                                                                                : "Other"));
+                                            printf("\t%d\t%s\t%d\t%s\n", patient_list[i].id, patient_list[i].name, patient_list[i].age,patient_list[i].gender==1?"Male":patient_list[i].gender==2? "Female":"Other");
+
+                                                                                                               
                     }
                     fclose(fp);
                     break;
@@ -362,11 +383,18 @@ int main()
 
                     break;
                 case 5:
-                    int conf = 0;
-                    printf("\n\nAre You Sure?\n1:yes\nanything else:no");
-                    scanf("%d", &conf);
-                    if (!(conf - 1))
-                        clean();
+                    int conf = 0, which;
+
+                    printf("\n\nWhich data?\n1: Doctor Data\n2: Patient Data\nanything else:none");
+                    scanf("%d", &which);
+
+                    if (which == 1 || which == 2)
+                    {
+                        printf("\n\nAre You Sure?\n1:yes\nanything else:no");
+                        scanf("%d", &conf);
+                        if (!(conf - 1))
+                            clean(which);
+                    }
                     break;
 
                 default:
