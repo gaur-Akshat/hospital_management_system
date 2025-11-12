@@ -6,6 +6,7 @@ struct Patient
 {
     int id;
     char name[50];
+    char medical_notes[500];
     int age;
     int gender;
 };
@@ -70,7 +71,7 @@ void clean(int which)
         fclose(fp);
         free(doctor_list);
         doctor_list = NULL;
-        num_doctors=0;
+        num_doctors = 0;
     }
     else if (which == 2)
     {
@@ -78,7 +79,7 @@ void clean(int which)
         fclose(fp);
         free(patient_list);
         patient_list = NULL;
-        num_patient=0;
+        num_patient = 0;
     }
 }
 
@@ -218,7 +219,7 @@ void Doctor(int i)
             return;
         }
         printf("\n\nAdd/Edit/Remove Again?\n1:yes\nanything else:no");
-        
+
         scanf("%d", &i);
         if (i == 1)
             Doctor(1);
@@ -307,6 +308,8 @@ void Patient()
 
             break;
         }
+        printf("Add Medical Notes: ");
+        scanf(" %[^\n]", patient_list[num_patient - 1].medical_notes);
     }
     else if (b == 2)
     {
@@ -358,13 +361,13 @@ int main()
                     Doctor(1);
                     break;
                 case 2:
-                    printf("\n\nID      Name    Age     Gender\n");
-                    
-                    for (int i =0; i< num_patient;i++)
-                    {
-                                            printf("\t%d\t%s\t%d\t%s\n", patient_list[i].id, patient_list[i].name, patient_list[i].age,patient_list[i].gender==1?"Male":patient_list[i].gender==2? "Female":"Other");
+                    printf("\n\nID      Name    Age     Gender   Medical_Notes\n");
 
-                                                                                                               
+                    for (int i = 0; i < num_patient; i++)
+                    {
+                        printf("\t%d\t%s\t%d\t%s\n", patient_list[i].id, patient_list[i].name, patient_list[i].age, patient_list[i].gender == 1 ? "Male" : patient_list[i].gender == 2 ? "Female"
+                                                                                                                                                                                       : "Other",
+                               patient_list[i].medical_notes);
                     }
                     fclose(fp);
                     break;
