@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 struct Patient
 {
@@ -17,10 +18,26 @@ struct Doctor
     char specialisation[50];
     float charge;
 };
+struct Time
+{
+    int date;
+    int month;
+    float hour;
+};
+
+struct Appointment
+{
+    int patient_id, doctor_id;
+    int time;
+    char specialisation[50];
+    float charge;
+};
 
 struct Doctor *doctor_list = NULL;
 struct Patient *patient_list = NULL;
-int num_doctors = 0, num_patient = 0, sor_t = 0, speciaaa = 1;
+struct Appointment *slots_list = NULL;
+struct Time *time_list = NULL;
+int num_doctors = 0, num_patient = 0, num_time = 0, num_appointments = 0, sor_t = 0, speciaaa = 1;
 char pass[50];
 
 void load_dataaaaaaa()
@@ -28,6 +45,12 @@ void load_dataaaaaaa()
     FILE *fp;
     struct Doctor doc;
     struct Patient pat;
+    struct Appointment app;
+    struct Time tim;
+    time_t t = time(NULL);
+    time_t ft;
+
+    struct tm tm = *localtime(&t);
 
     fp = fopen("doctor.dat", "rb");
 
@@ -50,6 +73,33 @@ void load_dataaaaaaa()
     }
 
     fclose(fp);
+    fp = fopen("appointment.dat", "rb");
+
+    while (fread(&app, sizeof(struct Appointment), 1, fp) == 1)
+    {
+        num_appointments++;
+        slots_list = realloc(slots_list, num_appointments * sizeof(struct Appointment));
+        slots_list[num_appointments - 1] = app;
+    }
+
+    fclose(fp);
+
+    for (int i = tm.tm_mday + 1; i < tm.tm_mday + 3; i++)
+    {
+        for (int j = 0; j < 24; j++)
+        {
+            ft = t + j * 3600 * i - tm.tm_mday;
+            struct tm tmt = *localtime(&ft);
+
+            if (j < 9)
+                continue;
+            num_time++;
+            time_list = realloc(time_list, num_time * sizeof(struct Time));
+            time_list[num_time - 1].hour = j;
+            time_list[num_time - 1].date = tmt.tm_mday;
+            time_list[num_time - 1].month = tmt.tm_mon;
+        }
+    }
 }
 void upload_dataaaaaaa()
 {
@@ -345,11 +395,12 @@ void Patient()
     while (1)
     {
         for (int i = 0; i < speciaaa; i++)
-            printf("%d for: %s", i+1, *(ptr + i));
-            scanf("%d",&ahh);
-            if(ahh>speciaaa){
-                printf("wrong input");
-                
+            printf("%d for: %s", i + 1, *(ptr + i));
+        scanf("%d", &ahh);
+        if (ahh > speciaaa)
+        {
+            printf("wrong input");
+
             continue;
         }
         break;
