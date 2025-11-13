@@ -35,7 +35,7 @@ struct Appointment
 
 struct Doctor *doctor_list = NULL;
 struct Patient *patient_list = NULL;
-struct Appointment *slots_list = NULL;
+struct Appointment *appointment_list = NULL;
 struct Time *time_list = NULL;
 int num_doctors = 0, num_patient = 0, num_time = 0, num_appointments = 0, sor_t = 0, speciaaa = 1;
 char pass[50];
@@ -78,8 +78,8 @@ void load_dataaaaaaa()
     while (fread(&app, sizeof(struct Appointment), 1, fp) == 1)
     {
         num_appointments++;
-        slots_list = realloc(slots_list, num_appointments * sizeof(struct Appointment));
-        slots_list[num_appointments - 1] = app;
+        appointment_list = realloc(appointment_list, num_appointments * sizeof(struct Appointment));
+        appointment_list[num_appointments - 1] = app;
     }
 
     fclose(fp);
@@ -376,7 +376,7 @@ void Patient()
             sorrt();
         speciaaa = 1;
         ptr = realloc(ptr, speciaaa * sizeof(char[50]));
-        strcpy(ptr + (speciaaa - 1), doctor_list[0].specialisation);
+        strcpy(*(ptr + (speciaaa - 1)), doctor_list[0].specialisation);
 
         for (int i = 0; i < num_doctors; i++)
         {
@@ -384,8 +384,9 @@ void Patient()
             {
 
                 speciaaa++;
-                ptr = realloc(ptr, speciaaa * sizeof(char[50]));
-                strcpy(ptr + (speciaaa - 1), doctor_list[i].specialisation);
+                ptr = realloc(ptr, speciaaa * sizeof(char *)); // capacity of ptr to hold n pointers
+                ptr[speciaaa - 1] = malloc(50);                // ptr's nth pointer's memory
+                strcpy(ptr[speciaaa - 1], doctor_list[i].specialisation);
             }
         }
     }
@@ -396,7 +397,7 @@ void Patient()
     {
         for (int i = 0; i < speciaaa; i++)
             printf("%d for: %s", i + 1, *(ptr + i));
-        scanf("%d", &ahh);
+        scanf(" %d", &ahh);
         if (ahh > speciaaa)
         {
             printf("wrong input");
@@ -404,6 +405,28 @@ void Patient()
             continue;
         }
         break;
+    }
+    int dae, ooh;
+    while (1)
+    {
+        printf("\n\nEnter any number to Choose from Available Time slots\n\n");
+        dae = time_list[0].date;
+        for (int i = 0; i < num_time; i++)
+        {
+            if (time_list[i].date != dae)
+            {
+                printf("\n");
+                dae = time_list[i].date;
+            }
+            printf("%d for: %d:00, %d, %d        ", i + 1, time_list[i].hour, time_list[i].date, time_list[i].month);
+        }
+        scanf("%d", &ooh);
+        if (ooh > num_time)
+        {
+            printf("wrong input");
+
+            continue;
+        }
     }
 }
 
