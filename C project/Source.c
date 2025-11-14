@@ -89,7 +89,7 @@ void load_dataaaaaaa()
     {
         for (int j = 0; j < 24; j++)
         {
-            ft = t + j * 3600 + (i - tm.tm_mday)*24*3600;
+            ft = t + j * 3600 + (i - tm.tm_mday) * 24 * 3600;
             struct tm tmt = *localtime(&ft);
 
             if (j < 9)
@@ -176,7 +176,7 @@ void Doctor(int i)
             while (foo)
             {
                 scanf("%d", &doct.id);
-                doct.id=abs(doct.id);
+                doct.id = abs(doct.id);
                 foo = 0;
                 for (int i = 0; i < num_doctors - 1; i++)
                 {
@@ -190,15 +190,15 @@ void Doctor(int i)
             }
 
             printf("Enter Name: ");
-            scanf("%s", doct.name);
+            scanf(" %49[^\n]", doct.name);
 
             printf("Enter Specialisation: ");
-            scanf("%s", doct.specialisation);
+            scanf(" %49[^\n]", doct.specialisation);
 
             printf("Enter charge: ");
             scanf("%f", &doct.charge);
 
-            doct.appointments=0;
+            doct.appointments = 0;
 
             doctor_list[num_doctors - 1] = doct;
 
@@ -208,7 +208,7 @@ void Doctor(int i)
             ind = -1;
             printf("Enter Id to edit doctor");
             scanf("%d", &id);
-            id=abs(id);
+            id = abs(id);
 
             for (int i = 0; i < num_doctors; i++)
             {
@@ -220,15 +220,15 @@ void Doctor(int i)
             }
             if (ind != -1)
             {
-                printf("\n\n%d\t%s\t%s\t%f\n\n", doctor_list[ind].id, doctor_list[ind].name, doctor_list[ind].specialisation, doctor_list[ind].charge);
+                printf("\n\n%d\t%49s\t%49s\t%f\n\n", doctor_list[ind].id, doctor_list[ind].name, doctor_list[ind].specialisation, doctor_list[ind].charge);
 
                 doct.id = id;
 
                 printf("Enter Name: ");
-                scanf("%s", doct.name);
+                scanf(" %49[^\n]", doct.name);
 
                 printf("Enter Specialisation: ");
-                scanf("%s", doct.specialisation);
+                scanf(" %49[^\n]", doct.specialisation);
 
                 printf("Enter charge: ");
                 scanf("%f", &doct.charge);
@@ -244,7 +244,7 @@ void Doctor(int i)
             ind = -1;
             printf("Enter Id to remove doctor");
             scanf("%d", &id);
-            id=abs(id);
+            id = abs(id);
 
             for (int i = 0; i < num_doctors; i++)
             {
@@ -334,7 +334,7 @@ void Patient()
         while (foo)
         {
             scanf("%d", &id);
-            id=abs(id);
+            id = abs(id);
             patient_list[num_patient - 1].id = id;
             foo = 0;
             for (int i = 0; i < num_patient - 1; i++)
@@ -349,7 +349,7 @@ void Patient()
         }
 
         printf("Enter Name: ");
-        scanf("%s", patient_list[num_patient - 1].name);
+        scanf(" %49[^\n]", patient_list[num_patient - 1].name);
 
         printf("Enter Age: ");
         scanf("%d", &patient_list[num_patient - 1].age);
@@ -369,7 +369,7 @@ void Patient()
             break;
         }
         printf("Add Medical Notes: ");
-        scanf(" %[^\n]", patient_list[num_patient - 1].medical_notes);
+        scanf(" %499[^\n]", patient_list[num_patient - 1].medical_notes);
     }
     else if (b == 2)
     {
@@ -380,8 +380,9 @@ void Patient()
             while (foo)
             {
                 scanf("%d", &id);
-                if(id==-1) return;
-                id=abs(id);
+                if (id == -1)
+                    return;
+                id = abs(id);
                 foo = 1;
                 for (int i = 0; i < num_patient; i++)
                 {
@@ -432,16 +433,16 @@ void Patient()
         while (1)
         {
             for (int i = 0; i < speciaaa; i++)
-                printf("\n%d for: %s", i + 1, *(ptr + i));
+                printf("\n%d for:%s", i + 1, *(ptr + i));
             scanf("%d", &ahh);
-            if (ahh > speciaaa || ahh<1)
+            if (ahh > speciaaa || ahh < 1)
             {
                 printf("wrong input");
                 continue;
             }
             break;
         }
-        int dae=0, ooh;
+        int dae = 0, ooh;
         int min;
         while (1)
         {
@@ -457,38 +458,39 @@ void Patient()
                 }
             }
             scanf("%d", &ooh);
-            if (ooh > num_time || ooh<1)
+            if (ooh > num_time || ooh < 1)
             {
                 printf("wrong input");
                 continue;
             }
-            int ND=0;
-            while (speciaaa!=0)
+            int ND = 0;
+            while (speciaaa != 0)
             {
-                if (doctor_list[ND].specialisation!=doctor_list[ND+1].specialisation)
+                if (doctor_list[ND].specialisation != doctor_list[ND + 1].specialisation)
                 {
                     speciaaa--;
                 }
                 ND++;
             }
-            min=ND;
-            for (; ND<num_doctors || doctor_list[ND].specialisation==doctor_list[ND+1].specialisation; ND++)
-                if(doctor_list[ND+1].appointments<doctor_list[min].appointments) min=ND+1;
+            min = ND;
+            for (; ND < num_doctors || doctor_list[ND].specialisation == doctor_list[ND + 1].specialisation; ND++)
+                if (doctor_list[ND + 1].appointments < doctor_list[min].appointments)
+                    min = ND + 1;
         }
-        
+
         num_appointments++;
 
-        appointment_list=realloc(appointment_list,num_appointments*sizeof(struct Appointment));
-        appointment_list[num_appointments-1].time=ooh-1;
-        appointment_list[num_appointments-1].charge=doctor_list[min].charge;
-        appointment_list[num_appointments-1].patient_id=patient_list[min].id;
-        appointment_list[num_appointments-1].doctor_id=doctor_list[min].id;
-        strcpy(appointment_list[num_appointments-1].specialisation, doctor_list[min].specialisation);
+        appointment_list = realloc(appointment_list, num_appointments * sizeof(struct Appointment));
+        appointment_list[num_appointments - 1].time = ooh - 1;
+        appointment_list[num_appointments - 1].charge = doctor_list[min].charge;
+        appointment_list[num_appointments - 1].patient_id = id; // LMAO I previously wrote: patient_list[min].id
+        appointment_list[num_appointments - 1].doctor_id = doctor_list[min].id;
+        strcpy(appointment_list[num_appointments - 1].specialisation, doctor_list[min].specialisation);
 
-        printf("\n\nDear Patient, thankyou for your patience, You have been Successfully Appointed with \"Mr/Mrs\" %s with Specialisation in %s at Time Slot: ",doctor_list[min].name,appointment_list[num_appointments-1].specialisation);
-        
+        printf("\n\nDear Patient, thankyou for your patience, You have been Successfully Appointed with \"Mr/Mrs\"%s with Specialisation in%s at Time Slot: ", doctor_list[min].name, appointment_list[num_appointments - 1].specialisation);
+
         printf("%-5.2f, %d, %d", time_list[ooh].hour, time_list[ooh].date, time_list[ooh].month);
-        printf("The Total charge would be %.2f₹",appointment_list[num_appointments-1].charge);
+        printf("The Total charge would be %.2f₹", appointment_list[num_appointments - 1].charge);
     }
     else
         printf("Sorry, No Doctors currently Available, Try again in future with PATIENT LOGIN Option");
@@ -512,9 +514,9 @@ int main()
         {
             char p[50];
             FILE *fp = fopen("pass.txt", "r");
-            fscanf(fp, "%49s", pass);
+            fscanf(fp, " %49[^\n]", pass);
             printf("Enter Password: ");
-            scanf("%s", p);
+            scanf(" %49[^\n]", p);
             if (strcmp(p, pass) != 0)
             {
                 printf("Wrong Password, going back");
@@ -525,7 +527,7 @@ int main()
             do
             {
                 flag = 0;
-                printf("\n\nEnter 1 for: Add/Edit/Delete doctor\nEnter 2 for: View all Patient\nEnter 3 for: Maintain doctor specialization wise list\nEnter 4 for: Password reset\nEnter 5 for: Clean Files\nEnter anything else for: Go to previous options");
+                printf("\n\nEnter 1 for: Add/Edit/Delete doctor\nEnter 2 for: View all Patient\nEnter 3 for: Maintain doctor specialization wise list\nEnter 4 for: Show Appointment List\nEnter 5 for: Password reset\nEnter 6 for: Clean Files\nEnter anything else for: Go to previous options");
 
                 scanf("%d", &c);
                 switch (c)
@@ -547,17 +549,29 @@ int main()
                 case 3:
                     Doctor(2);
                     break;
-
                 case 4:
+                    printf("\n\nDoctorID        PatientID       Specialisation  TimeSlot       Charge\n");
+
+                    if(appointment_list!=NULL){for (int i = 0; i < num_patient; i++)
+                    {
+                        printf("%d\t\t%d\t\t%s\t\t%d\t\t%d\n", appointment_list[i].doctor_id,appointment_list[i].patient_id,appointment_list[i].specialisation,appointment_list[i].time,appointment_list[i].charge );
+                    }}
+                    else{
+                        printf("Empty List");
+                    }
+                    break;
+                    break;
+
+                case 5:
                     printf("\n\nEnter new password");
-                    scanf("%s", pass);
+                    scanf(" %49[^\n]", pass);
                     fp = fopen("pass.txt", "w");
                     fprintf(fp, "%s", pass);
                     fclose(fp);
                     printf("Password Updated");
 
                     break;
-                case 5:
+                case 6:
                     int conf = 0, which;
 
                     printf("\n\nWhich data?\n1: Doctor Data\n2: Patient Data\nanything else:none");
@@ -587,7 +601,7 @@ int main()
             break;
         }
     }
-    
+
     upload_dataaaaaaa();
     return 0;
 }
