@@ -326,7 +326,8 @@ void Patient()
         int foo = 1;
         while (foo)
         {
-            scanf("%d", &patient_list[num_patient - 1].id);
+            scanf("%d", &id);
+            patient_list[num_patient - 1].id = id;
             foo = 0;
             for (int i = 0; i < num_patient - 1; i++)
             {
@@ -364,7 +365,32 @@ void Patient()
     }
     else if (b == 2)
     {
-        printf("to be done");
+        if(patient_list!=NULL)
+        {printf("Enter Id");
+        int foo = 1,bar;
+        while (foo)
+        {
+            scanf("%d", &id);
+            foo = 1;
+            for (int i = 0; i < num_patient; i++)
+            {
+                if (patient_list[i].id == id)
+                {
+                    foo = 0;
+                    break;
+                }
+            }
+            if(id==1){
+                printf("\n\nID not Found, try again, or Press 0 to EXIT");
+                scanf("%d", &bar);
+                if(bar==0){
+                    return;
+                }
+            }
+        }}else{
+            printf("\n\nPatient list is Empty, Going back");
+            return;
+        }
     }
     else
     {
@@ -374,60 +400,64 @@ void Patient()
     {
         if (sor_t == 0)
             sorrt();
+
         speciaaa = 1;
-        ptr = realloc(ptr, speciaaa * sizeof(char[50]));
-        strcpy(*(ptr + (speciaaa - 1)), doctor_list[0].specialisation);
+        ptr = realloc(ptr, speciaaa * sizeof(char *));
+        ptr[speciaaa - 1] = malloc(50);
+        strcpy(ptr[speciaaa - 1], doctor_list[0].specialisation);
+        strcpy(str, doctor_list[0].specialisation);
 
         for (int i = 0; i < num_doctors; i++)
         {
-            if (!(strcmp(str, doctor_list[i].specialisation) == 0))
+            if (strcmp(str, doctor_list[i].specialisation) != 0)
             {
-
                 speciaaa++;
                 ptr = realloc(ptr, speciaaa * sizeof(char *)); // capacity of ptr to hold n pointers
                 ptr[speciaaa - 1] = malloc(50);                // ptr's nth pointer's memory
                 strcpy(ptr[speciaaa - 1], doctor_list[i].specialisation);
             }
         }
-    }
 
-    printf("Enter any of the number to get assigned to that speciality Doctor");
-    int ahh;
-    while (1)
-    {
-        for (int i = 0; i < speciaaa; i++)
-            printf("%d for: %s", i + 1, *(ptr + i));
-        scanf(" %d", &ahh);
-        if (ahh > speciaaa)
+        printf("Enter any of the number below %d to get assigned to that speciality Doctor", speciaaa);
+        int ahh;
+        while (1)
         {
-            printf("wrong input");
-
-            continue;
-        }
-        break;
-    }
-    int dae, ooh;
-    while (1)
-    {
-        printf("\n\nEnter any number to Choose from Available Time slots\n\n");
-        dae = time_list[0].date;
-        for (int i = 0; i < num_time; i++)
-        {
-            if (time_list[i].date != dae)
+            printf("what");
+            for (int i = 0; i < speciaaa; i++)
+                printf("%d for: %s", i + 1, *(ptr + i));
+            scanf(" %d", &ahh);
+            if (ahh > speciaaa)
             {
-                printf("\n");
-                dae = time_list[i].date;
+                printf("wrong input");
+                continue;
             }
-            printf("%d for: %d:00, %d, %d        ", i + 1, time_list[i].hour, time_list[i].date, time_list[i].month);
+            break;
         }
-        scanf("%d", &ooh);
-        if (ooh > num_time)
+        int dae, ooh;
+        while (1)
         {
-            printf("wrong input");
+            printf("\n\nEnter any number to Choose from Available Time slots\n\n");
+            dae = time_list[0].date;
+            for (int i = 0; i < num_time; i++)
+            {
+                if (time_list[i].date != dae)
+                {
+                    printf("\n");
+                    dae = time_list[i].date;
+                }
+                printf("%d for: %d:00, %d, %d        ", i + 1, time_list[i].hour, time_list[i].date, time_list[i].month);
+            }
+            scanf("%d", &ooh);
+            if (ooh > num_time)
+            {
+                printf("wrong input");
 
-            continue;
+                continue;
+            }
         }
     }
+    else
+        printf("Sorry, No Doctors currently Available, Try again in future with PATIENT LOGIN Option");
 }
 
 int main()
@@ -474,7 +504,7 @@ int main()
 
                     for (int i = 0; i < num_patient; i++)
                     {
-                        printf("\t%d\t%s\t%d\t%s\n", patient_list[i].id, patient_list[i].name, patient_list[i].age, patient_list[i].gender == 1 ? "Male" : patient_list[i].gender == 2 ? "Female"
+                        printf("%d\t%s\t%d\t%s\t%s\n", patient_list[i].id, patient_list[i].name, patient_list[i].age, patient_list[i].gender == 1 ? "Male" : patient_list[i].gender == 2 ? "Female"
                                                                                                                                                                                        : "Other",
                                patient_list[i].medical_notes);
                     }
