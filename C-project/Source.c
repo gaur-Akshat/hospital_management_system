@@ -595,7 +595,7 @@ int main()
 
             } while (1);
         }
-        else
+        else//ok
         {
             printf("Files Saved, Exiting");
             break;
