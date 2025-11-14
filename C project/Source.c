@@ -88,7 +88,7 @@ void load_dataaaaaaa()
     {
         for (int j = 0; j < 24; j++)
         {
-            ft = t + j * 3600 * i - tm.tm_mday;
+            ft = t + j * 3600 + (i - tm.tm_mday)*24*3600;
             struct tm tmt = *localtime(&ft);
 
             if (j < 9)
@@ -100,6 +100,19 @@ void load_dataaaaaaa()
             time_list[num_time - 1].month = tmt.tm_mon;
         }
     }
+
+    int    dae = 0;
+
+    for (int i = 0; i < num_time; i++)
+            {
+                printf("%-3d for: %-5.2f, %d, %d            ", i + 1, time_list[i].hour, time_list[i].date, time_list[i].month);
+                dae++;
+                if (dae == 3)
+                {
+                    printf("\n");
+                    dae = 0;
+                }
+            }
 }
 void upload_dataaaaaaa()
 {
@@ -450,7 +463,7 @@ void Patient()
                     printf("\n");
                     dae = time_list[i].date;
                 }
-                printf("%d for: %d:00, %d, %d        ", i + 1, time_list[i].hour, time_list[i].date, time_list[i].month);
+                printf("%d for: %.2f, %d, %d        ", i + 1, time_list[i].hour, time_list[i].date, time_list[i].month);
             }
             scanf("%d", &ooh);
             if (ooh > num_time)
