@@ -100,19 +100,6 @@ void load_dataaaaaaa()
             time_list[num_time - 1].month = tmt.tm_mon;
         }
     }
-
-    int    dae = 0;
-
-    for (int i = 0; i < num_time; i++)
-            {
-                printf("%-3d for: %-5.2f, %d, %d            ", i + 1, time_list[i].hour, time_list[i].date, time_list[i].month);
-                dae++;
-                if (dae == 3)
-                {
-                    printf("\n");
-                    dae = 0;
-                }
-            }
 }
 void upload_dataaaaaaa()
 {
@@ -188,6 +175,7 @@ void Doctor(int i)
             while (foo)
             {
                 scanf("%d", &doct.id);
+                doct.id=abs(doct.id);
                 foo = 0;
                 for (int i = 0; i < num_doctors - 1; i++)
                 {
@@ -216,6 +204,7 @@ void Doctor(int i)
             ind = -1;
             printf("Enter Id to edit doctor");
             scanf("%d", &id);
+            id=abs(id);
 
             for (int i = 0; i < num_doctors; i++)
             {
@@ -251,6 +240,7 @@ void Doctor(int i)
             ind = -1;
             printf("Enter Id to remove doctor");
             scanf("%d", &id);
+            id=abs(id);
 
             for (int i = 0; i < num_doctors; i++)
             {
@@ -340,6 +330,7 @@ void Patient()
         while (foo)
         {
             scanf("%d", &id);
+            id=abs(id);
             patient_list[num_patient - 1].id = id;
             foo = 0;
             for (int i = 0; i < num_patient - 1; i++)
@@ -385,6 +376,8 @@ void Patient()
             while (foo)
             {
                 scanf("%d", &id);
+                if(id==-1) return;
+                id=abs(id);
                 foo = 1;
                 for (int i = 0; i < num_patient; i++)
                 {
@@ -394,15 +387,8 @@ void Patient()
                         break;
                     }
                 }
-                if (id == 1)
-                {
-                    printf("\n\nID not Found, try again, or Press 0 to EXIT");
-                    scanf("%d", &bar);
-                    if (bar == 0)
-                    {
-                        return;
-                    }
-                }
+                if (foo == 1)
+                    printf("\n\nID not Found, try again, or Press -1 to EXIT");
             }
         }
         else
@@ -443,7 +429,7 @@ void Patient()
         {
             for (int i = 0; i < speciaaa; i++)
                 printf("\n%d for: %s", i + 1, *(ptr + i));
-            scanf(" %d", &ahh);
+            scanf("%d", &ahh);
             if (ahh > speciaaa)
             {
                 printf("wrong input");
@@ -451,19 +437,19 @@ void Patient()
             }
             break;
         }
-        int dae, ooh;
+        int dae=0, ooh;
         while (1)
         {
             printf("\n\nEnter any number to Choose from Available Time slots\n\n");
-            dae = time_list[0].date;
             for (int i = 0; i < num_time; i++)
             {
-                if (time_list[i].date != dae)
+                printf("%-3d for: %-5.2f, %d, %d            ", i + 1, time_list[i].hour, time_list[i].date, time_list[i].month);
+                dae++;
+                if (dae == 3)
                 {
                     printf("\n");
-                    dae = time_list[i].date;
+                    dae = 0;
                 }
-                printf("%d for: %.2f, %d, %d        ", i + 1, time_list[i].hour, time_list[i].date, time_list[i].month);
             }
             scanf("%d", &ooh);
             if (ooh > num_time)
@@ -473,6 +459,8 @@ void Patient()
                 continue;
             }
         }
+        appointment_list=realloc(appointment_list,num_appointments*sizeof(struct Appointment));
+        appointment_list[num_appointments-1].time=ooh;
     }
     else
         printf("Sorry, No Doctors currently Available, Try again in future with PATIENT LOGIN Option");
