@@ -441,8 +441,21 @@ void Patient()
     {
         return;
     }
-    if (doctor_list != NULL)
+    int bsdk=1;
+    for (int i = 0; i < num_appointments; i++)
     {
+        if (id==appointment_list[i].patient_id)
+        {
+            printf("You have already been Registered here are your Appointment details:");
+            printf("%d\t\t%d\t\t%s\t\t%-5.2f, %d, %d\t\t%f\n", appointment_list[i].doctor_id, appointment_list[i].patient_id, appointment_list[i].specialisation, time_list[appointment_list[i].time].hour, time_list[appointment_list[i].time].date, time_list[appointment_list[i].time].month, appointment_list[i].charge);
+
+            bsdk=0;
+        }
+        
+    }
+    if (doctor_list != NULL && bsdk)
+    {
+        
         if (sor_t == 0)
             sorrt();
 
@@ -604,7 +617,7 @@ int main()
                     {
                         for (int i = 0; i < num_appointments; i++)
                         {
-                            printf("%d\t\t%d\t\t%s\t\t%d\t\t%f\n", appointment_list[i].doctor_id, appointment_list[i].patient_id, appointment_list[i].specialisation, appointment_list[i].time, appointment_list[i].charge);
+                            printf("%d\t\t%d\t\t%s\t\t%-5.2f, %d, %d\t\t%f\n", appointment_list[i].doctor_id, appointment_list[i].patient_id, appointment_list[i].specialisation, time_list[appointment_list[i].time].hour, time_list[appointment_list[i].time].date, time_list[appointment_list[i].time].month, appointment_list[i].charge);
                         }
                     }
                     else
