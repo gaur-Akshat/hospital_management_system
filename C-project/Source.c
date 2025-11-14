@@ -9,6 +9,8 @@ In this code, we have Implemented, Structures, Dynamic Memory, File Handling, Au
 Link to the FlowChart: https://lucid.app/lucidchart/544529bb-770d-46ec-8313-6059b0461af5/edit?viewport_loc=-1502%2C-997%2C2587%2C1250%2C0_0&invitationId=inv_69ed15e9-9221-4eea-8d34-1d78aad465f6
 */
 
+// important comment before 1st function
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,7 +38,6 @@ struct Time
     int month;
     float hour;
 };
-
 struct Appointment
 {
     int patient_id, doctor_id;
@@ -45,14 +46,18 @@ struct Appointment
     float charge;
 };
 
-//Note: Realloc should always be handled with temporary ptr, to Handle Null return in case Memory fulls, But i don't think it'll happen
-
 struct Doctor *doctor_list = NULL;
 struct Patient *patient_list = NULL;
 struct Appointment *appointment_list = NULL;
 struct Time *time_list = NULL;
+// Used these for Dynamic Memory
+
 int num_doctors = 0, num_patient = 0, num_time = 0, num_appointments = 0, sor_t = 0, speciaaa = 1;
 char pass[50];
+
+/*
+After This goto Main, my comments will explain the whole code ;)
+*/
 
 void load_dataaaaaaa()
 {
@@ -61,10 +66,10 @@ void load_dataaaaaaa()
     struct Patient pat;
     struct Appointment app;
     struct Time tim;
+
     time_t t = time(NULL);
     time_t ft;
-
-    struct tm tm = *localtime(&t);
+    struct tm tm = *localtime(&t); // used it for Time Slots creation
 
     fp = fopen("doctor.dat", "rb");
     if (fp == NULL)
@@ -72,14 +77,14 @@ void load_dataaaaaaa()
         fp = fopen("doctor.dat", "wb");
         fclose(fp);
         fp = fopen("doctor.dat", "rb");
-    }
+    } // open OR create then open
 
     while (fread(&doc, sizeof(struct Doctor), 1, fp) == 1)
     {
         num_doctors++;
         doctor_list = realloc(doctor_list, num_doctors * sizeof(struct Doctor));
         doctor_list[num_doctors - 1] = doc;
-    }
+    } // Dynamic Memory, Yay!!
 
     fclose(fp);
 
@@ -89,14 +94,14 @@ void load_dataaaaaaa()
         fp = fopen("patient.dat", "wb");
         fclose(fp);
         fp = fopen("patient.dat", "rb");
-    }
+    } // open OR create then open
 
     while (fread(&pat, sizeof(struct Patient), 1, fp) == 1)
     {
         num_patient++;
         patient_list = realloc(patient_list, num_patient * sizeof(struct Patient));
         patient_list[num_patient - 1] = pat;
-    }
+    } // Dynamic Memory, Yay!!
 
     fclose(fp);
     fp = fopen("appointment.dat", "rb");
@@ -105,14 +110,14 @@ void load_dataaaaaaa()
         fp = fopen("appointment.dat", "wb");
         fclose(fp);
         fp = fopen("appointment.dat", "rb");
-    }
+    } // open OR create then open
 
     while (fread(&app, sizeof(struct Appointment), 1, fp) == 1)
     {
         num_appointments++;
         appointment_list = realloc(appointment_list, num_appointments * sizeof(struct Appointment));
         appointment_list[num_appointments - 1] = app;
-    }
+    } // Dynamic Memory, Yay!!
 
     fclose(fp);
 
@@ -131,7 +136,7 @@ void load_dataaaaaaa()
             time_list[num_time - 1].date = tmt.tm_mday;
             time_list[num_time - 1].month = tmt.tm_mon;
         }
-    }
+    } // This loop has created Time Slots for upto 3 next days, excluding any that already exits in Appointment
 }
 void upload_dataaaaaaa()
 {
@@ -441,21 +446,22 @@ void Patient()
     {
         return;
     }
-    int bsdk=1;
+    int bsdk = 1;
     for (int i = 0; i < num_appointments; i++)
     {
-        if (id==appointment_list[i].patient_id)
+        if (id == appointment_list[i].patient_id)
         {
-            printf("You have already been Registered here are your Appointment details:");
+            printf("You have already been Registered here are your Appointment details:\n\n");
+            printf("\n\nDoctorID        PatientID       Specialisation  TimeSlot       Charge\n");
+
             printf("%d\t\t%d\t\t%s\t\t%-5.2f, %d, %d\t\t%f\n", appointment_list[i].doctor_id, appointment_list[i].patient_id, appointment_list[i].specialisation, time_list[appointment_list[i].time].hour, time_list[appointment_list[i].time].date, time_list[appointment_list[i].time].month, appointment_list[i].charge);
 
-            bsdk=0;
+            bsdk = 0;
         }
-        
     }
     if (doctor_list != NULL && bsdk)
     {
-        
+
         if (sor_t == 0)
             sorrt();
 
@@ -490,45 +496,63 @@ void Patient()
             }
             break;
         }
-        
+
         for (int i = 0; i < speciaaa; i++)
             free(ptr[i]);
         free(ptr);
         int dae = 0, ooh;
-        int min;
-        while (1)
+        int min, chck;
+
+        printf("\n\nEnter any number to Choose from Available Time slots\n\n");
+        for (int i = 0; i < num_time; i++)
         {
-            printf("\n\nEnter any number to Choose from Available Time slots\n\n");
-            for (int i = 0; i < num_time; i++)
+            chck = 1;
+            for (int j = 0; j < num_appointments; j++)
             {
-                printf("%-3d for: %-5.2f, %d, %d            ", i + 1, time_list[i].hour, time_list[i].date, time_list[i].month);
-                dae++;
-                if (dae == 3)
+                if (i == appointment_list[j].time)
                 {
-                    printf("\n");
-                    dae = 0;
+                    chck = 0;
                 }
             }
-            scanf("%d", &ooh);
-            if (ooh > num_time || ooh < 1)
+            if (chck)
+                printf("%-3d for: %-5.2f, %d, %d            ", i + 1, time_list[i].hour, time_list[i].date, time_list[i].month);
+            dae++;
+            if (dae == 3)
             {
-                printf("wrong input");
+                printf("\n");
+                dae = 0;
+            }
+        }
+        while (1)
+        {
+            scanf("%d", &ooh);
+            chck = 0;
+            for (int j = 0; j < num_appointments; j++)
+            {
+                if (ooh - 1 == appointment_list[j].time)
+                {
+                    chck = 1;
+                }
+            }
+
+            if (ooh > num_time || ooh < 1 || chck)
+            {
+                printf("wrong input, try again");
                 continue;
             }
             break;
         }
         int ND = 0;
-        while (ahh -1 > 0 && ND + 1 < num_doctors)
+        while (ahh - 1 > 0 && ND + 1 < num_doctors)
         {
             if (doctor_list[ND].specialisation != doctor_list[ND + 1].specialisation)
             {
                 ahh--;
-
             }
             ND++;
         }
         min = ND;
-        for (; ND +1 < num_doctors && doctor_list[ND].specialisation == doctor_list[ND + 1].specialisation; ND++)
+        for (; ND + 1 < num_doctors && doctor_list[ND].specialisation == doctor_list[ND + 1].specialisation; ND++)
             if (doctor_list[ND + 1].appointments < doctor_list[min].appointments)
                 min = ND + 1;
 
@@ -544,7 +568,7 @@ void Patient()
         printf("\n\nDear Patient, thankyou for your patience, You have been Successfully Appointed with \"Mr/Mrs\"%s with Specialisation in%s at Time Slot: ", doctor_list[min].name, appointment_list[num_appointments - 1].specialisation);
 
         printf("%-5.2f, %d, %d", time_list[ooh - 1].hour, time_list[ooh - 1].date, time_list[ooh - 1].month);
-        printf("The Total charge would be %.2f₹", appointment_list[num_appointments - 1].charge);
+        printf(" The Total charge would be %.2f BUCKS", appointment_list[num_appointments - 1].charge);
     }
     else
         printf("Sorry, No Doctors currently Available, Try again in future with PATIENT LOGIN Option");
@@ -552,7 +576,7 @@ void Patient()
 
 int main()
 {
-    load_dataaaaaaa();
+    load_dataaaaaaa(); // Load the data from binary File and create if doesn't exist, (I'd suggest go there)
 
     int a, flag;
     while (1)
@@ -569,7 +593,7 @@ int main()
             char p[50];
             FILE *fp;
             fp = fopen("pass.txt", "r");
-            if (fp == NULL) 
+            if (fp == NULL)
             {
                 fp = fopen("pass.txt", "w");
                 fprintf(fp, "%s", "1234");
