@@ -17,6 +17,7 @@ struct Doctor
     char name[50];
     char specialisation[50];
     float charge;
+    int appointments;
 };
 struct Time
 {
@@ -196,6 +197,9 @@ void Doctor(int i)
 
             printf("Enter charge: ");
             scanf("%f", &doct.charge);
+
+            doct.appointments=0;
+
             doctor_list[num_doctors - 1] = doct;
 
             sor_t = 0;
@@ -430,7 +434,7 @@ void Patient()
             for (int i = 0; i < speciaaa; i++)
                 printf("\n%d for: %s", i + 1, *(ptr + i));
             scanf("%d", &ahh);
-            if (ahh > speciaaa)
+            if (ahh > speciaaa || ahh<1)
             {
                 printf("wrong input");
                 continue;
@@ -438,6 +442,7 @@ void Patient()
             break;
         }
         int dae=0, ooh;
+        int min;
         while (1)
         {
             printf("\n\nEnter any number to Choose from Available Time slots\n\n");
@@ -452,15 +457,38 @@ void Patient()
                 }
             }
             scanf("%d", &ooh);
-            if (ooh > num_time)
+            if (ooh > num_time || ooh<1)
             {
                 printf("wrong input");
-
                 continue;
             }
+            int ND=0;
+            while (speciaaa!=0)
+            {
+                if (doctor_list[ND].specialisation!=doctor_list[ND+1].specialisation)
+                {
+                    speciaaa--;
+                }
+                ND++;
+            }
+            min=ND;
+            for (; ND<num_doctors || doctor_list[ND].specialisation==doctor_list[ND+1].specialisation; ND++)
+                if(doctor_list[ND+1].appointments<doctor_list[min].appointments) min=ND+1;
         }
+        
+        num_appointments++;
+
         appointment_list=realloc(appointment_list,num_appointments*sizeof(struct Appointment));
-        appointment_list[num_appointments-1].time=ooh;
+        appointment_list[num_appointments-1].time=ooh-1;
+        appointment_list[num_appointments-1].charge=doctor_list[min].charge;
+        appointment_list[num_appointments-1].patient_id=patient_list[min].id;
+        appointment_list[num_appointments-1].doctor_id=doctor_list[min].id;
+        strcpy(appointment_list[num_appointments-1].specialisation, doctor_list[min].specialisation);
+
+        printf("\n\nDear Patient, thankyou for your patience, You have been Successfully Appointed with \"Mr/Mrs\" %s with Specialisation in %s at Time Slot: ",doctor_list[min].name,appointment_list[num_appointments-1].specialisation);
+        
+        printf("%-5.2f, %d, %d", time_list[ooh].hour, time_list[ooh].date, time_list[ooh].month);
+        printf("The Total charge would be %.2f₹",appointment_list[num_appointments-1].charge);
     }
     else
         printf("Sorry, No Doctors currently Available, Try again in future with PATIENT LOGIN Option");
@@ -559,8 +587,7 @@ int main()
             break;
         }
     }
-
+    
     upload_dataaaaaaa();
-
     return 0;
 }
