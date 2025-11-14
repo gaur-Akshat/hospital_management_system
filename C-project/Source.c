@@ -569,9 +569,10 @@ int main()
             char p[50];
             FILE *fp;
             fp = fopen("pass.txt", "r");
-            if (fp == NULL)
+            if (fp == NULL) 
             {
                 fp = fopen("pass.txt", "w");
+                fprintf(fp, "%s", "1234");
                 fclose(fp);
                 fp = fopen("pass.txt", "r");
             }
