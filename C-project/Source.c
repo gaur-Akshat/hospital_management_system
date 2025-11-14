@@ -1,3 +1,14 @@
+/*
+Helllo, This our End Semester Project on Hospital Patient Record Management System
+
+Section ND;
+Team: Agriim Rastogi, Akshat Gaur, Amrit Mathur, Hemant Tyagi, Dhruv Singh
+
+In this code, we have Implemented, Structures, Dynamic Memory, File Handling, Authentication, Searching/Sorting, and String Handling
+
+Link to the FlowChart: https://lucid.app/lucidchart/544529bb-770d-46ec-8313-6059b0461af5/edit?viewport_loc=-1502%2C-997%2C2587%2C1250%2C0_0&invitationId=inv_69ed15e9-9221-4eea-8d34-1d78aad465f6
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -34,6 +45,8 @@ struct Appointment
     float charge;
 };
 
+//Note: Realloc should always be handled with temporary ptr, to Handle Null return in case Memory fulls, But i don't think it'll happen
+
 struct Doctor *doctor_list = NULL;
 struct Patient *patient_list = NULL;
 struct Appointment *appointment_list = NULL;
@@ -54,6 +67,12 @@ void load_dataaaaaaa()
     struct tm tm = *localtime(&t);
 
     fp = fopen("doctor.dat", "rb");
+    if (fp == NULL)
+    {
+        fp = fopen("doctor.dat", "wb");
+        fclose(fp);
+        fp = fopen("doctor.dat", "rb");
+    }
 
     while (fread(&doc, sizeof(struct Doctor), 1, fp) == 1)
     {
@@ -65,6 +84,12 @@ void load_dataaaaaaa()
     fclose(fp);
 
     fp = fopen("patient.dat", "rb");
+    if (fp == NULL)
+    {
+        fp = fopen("patient.dat", "wb");
+        fclose(fp);
+        fp = fopen("patient.dat", "rb");
+    }
 
     while (fread(&pat, sizeof(struct Patient), 1, fp) == 1)
     {
@@ -75,6 +100,12 @@ void load_dataaaaaaa()
 
     fclose(fp);
     fp = fopen("appointment.dat", "rb");
+    if (fp == NULL)
+    {
+        fp = fopen("appointment.dat", "wb");
+        fclose(fp);
+        fp = fopen("appointment.dat", "rb");
+    }
 
     while (fread(&app, sizeof(struct Appointment), 1, fp) == 1)
     {
@@ -111,6 +142,10 @@ void upload_dataaaaaaa()
 
     fp = fopen("patient.dat", "wb");
     fwrite(patient_list, sizeof(struct Patient), num_patient, fp);
+    fclose(fp);
+
+    fp = fopen("appointment.dat", "wb");
+    fwrite(appointment_list, sizeof(struct Appointment), num_appointments, fp);
     fclose(fp);
 }
 void clean(int which)
@@ -430,10 +465,10 @@ void Patient()
 
         printf("Enter any of the number from 1 to %d to get assigned to that speciality Doctor\n", speciaaa);
         int ahh;
+        for (int i = 0; i < speciaaa; i++)
+            printf("\n%d for:%s", i + 1, *(ptr + i));
         while (1)
         {
-            for (int i = 0; i < speciaaa; i++)
-                printf("\n%d for:%s", i + 1, *(ptr + i));
             scanf("%d", &ahh);
             if (ahh > speciaaa || ahh < 1)
             {
@@ -442,6 +477,10 @@ void Patient()
             }
             break;
         }
+        
+        for (int i = 0; i < speciaaa; i++)
+            free(ptr[i]);
+        free(ptr);
         int dae = 0, ooh;
         int min;
         while (1)
@@ -463,20 +502,22 @@ void Patient()
                 printf("wrong input");
                 continue;
             }
-            int ND = 0;
-            while (speciaaa != 0)
-            {
-                if (doctor_list[ND].specialisation != doctor_list[ND + 1].specialisation)
-                {
-                    speciaaa--;
-                }
-                ND++;
-            }
-            min = ND;
-            for (; ND < num_doctors || doctor_list[ND].specialisation == doctor_list[ND + 1].specialisation; ND++)
-                if (doctor_list[ND + 1].appointments < doctor_list[min].appointments)
-                    min = ND + 1;
+            break;
         }
+        int ND = 0;
+        while (ahh -1 > 0 && ND + 1 < num_doctors)
+        {
+            if (doctor_list[ND].specialisation != doctor_list[ND + 1].specialisation)
+            {
+                ahh--;
+
+            }
+            ND++;
+        }
+        min = ND;
+        for (; ND +1 < num_doctors && doctor_list[ND].specialisation == doctor_list[ND + 1].specialisation; ND++)
+            if (doctor_list[ND + 1].appointments < doctor_list[min].appointments)
+                min = ND + 1;
 
         num_appointments++;
 
@@ -489,7 +530,7 @@ void Patient()
 
         printf("\n\nDear Patient, thankyou for your patience, You have been Successfully Appointed with \"Mr/Mrs\"%s with Specialisation in%s at Time Slot: ", doctor_list[min].name, appointment_list[num_appointments - 1].specialisation);
 
-        printf("%-5.2f, %d, %d", time_list[ooh].hour, time_list[ooh].date, time_list[ooh].month);
+        printf("%-5.2f, %d, %d", time_list[ooh - 1].hour, time_list[ooh - 1].date, time_list[ooh - 1].month);
         printf("The Total charge would be %.2f₹", appointment_list[num_appointments - 1].charge);
     }
     else
@@ -513,7 +554,14 @@ int main()
         else if (a == 2)
         {
             char p[50];
-            FILE *fp = fopen("pass.txt", "r");
+            FILE *fp;
+            fp = fopen("pass.txt", "r");
+            if (fp == NULL)
+            {
+                fp = fopen("pass.txt", "w");
+                fclose(fp);
+                fp = fopen("pass.txt", "r");
+            }
             fscanf(fp, " %49[^\n]", pass);
             printf("Enter Password: ");
             scanf(" %49[^\n]", p);
@@ -552,11 +600,15 @@ int main()
                 case 4:
                     printf("\n\nDoctorID        PatientID       Specialisation  TimeSlot       Charge\n");
 
-                    if(appointment_list!=NULL){for (int i = 0; i < num_patient; i++)
+                    if (appointment_list != NULL)
                     {
-                        printf("%d\t\t%d\t\t%s\t\t%d\t\t%d\n", appointment_list[i].doctor_id,appointment_list[i].patient_id,appointment_list[i].specialisation,appointment_list[i].time,appointment_list[i].charge );
-                    }}
-                    else{
+                        for (int i = 0; i < num_appointments; i++)
+                        {
+                            printf("%d\t\t%d\t\t%s\t\t%d\t\t%f\n", appointment_list[i].doctor_id, appointment_list[i].patient_id, appointment_list[i].specialisation, appointment_list[i].time, appointment_list[i].charge);
+                        }
+                    }
+                    else
+                    {
                         printf("Empty List");
                     }
                     break;
@@ -595,7 +647,7 @@ int main()
 
             } while (1);
         }
-        else//ok
+        else // ok
         {
             printf("Files Saved, Exiting");
             break;
