@@ -365,29 +365,35 @@ void Patient()
     }
     else if (b == 2)
     {
-        if(patient_list!=NULL)
-        {printf("Enter Id");
-        int foo = 1,bar;
-        while (foo)
+        if (patient_list != NULL)
         {
-            scanf("%d", &id);
-            foo = 1;
-            for (int i = 0; i < num_patient; i++)
+            printf("Enter Id");
+            int foo = 1, bar;
+            while (foo)
             {
-                if (patient_list[i].id == id)
+                scanf("%d", &id);
+                foo = 1;
+                for (int i = 0; i < num_patient; i++)
                 {
-                    foo = 0;
-                    break;
+                    if (patient_list[i].id == id)
+                    {
+                        foo = 0;
+                        break;
+                    }
+                }
+                if (id == 1)
+                {
+                    printf("\n\nID not Found, try again, or Press 0 to EXIT");
+                    scanf("%d", &bar);
+                    if (bar == 0)
+                    {
+                        return;
+                    }
                 }
             }
-            if(id==1){
-                printf("\n\nID not Found, try again, or Press 0 to EXIT");
-                scanf("%d", &bar);
-                if(bar==0){
-                    return;
-                }
-            }
-        }}else{
+        }
+        else
+        {
             printf("\n\nPatient list is Empty, Going back");
             return;
         }
@@ -418,13 +424,12 @@ void Patient()
             }
         }
 
-        printf("Enter any of the number below %d to get assigned to that speciality Doctor", speciaaa);
+        printf("Enter any of the number from 1 to %d to get assigned to that speciality Doctor\n", speciaaa);
         int ahh;
         while (1)
         {
-            printf("what");
             for (int i = 0; i < speciaaa; i++)
-                printf("%d for: %s", i + 1, *(ptr + i));
+                printf("\n%d for: %s", i + 1, *(ptr + i));
             scanf(" %d", &ahh);
             if (ahh > speciaaa)
             {
@@ -505,7 +510,7 @@ int main()
                     for (int i = 0; i < num_patient; i++)
                     {
                         printf("%d\t%s\t%d\t%s\t%s\n", patient_list[i].id, patient_list[i].name, patient_list[i].age, patient_list[i].gender == 1 ? "Male" : patient_list[i].gender == 2 ? "Female"
-                                                                                                                                                                                       : "Other",
+                                                                                                                                                                                         : "Other",
                                patient_list[i].medical_notes);
                     }
                     break;
