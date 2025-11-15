@@ -338,6 +338,7 @@ void Doctor(int i)
                         appointment_list[i] = appointment_list[i + 1];
                     }
                     num_appointments--;
+                    i--;
                     if (num_appointments != 0)
                         appointment_list = realloc(appointment_list, num_appointments * sizeof(struct Appointment));
                     else
@@ -707,7 +708,7 @@ int main()
                     printf("\n\nWhich data?\n1: Doctor Data\n2: Patient Data\nanything else:none");
                     scanf("%d", &which);
 
-                    if (which == 1 || which == 2)
+                    if (which == 1 || which == 2 || which==3)
                     {
                         printf("\n\nAre You Sure?\n1:yes\nanything else:no");
                         scanf("%d", &conf);
