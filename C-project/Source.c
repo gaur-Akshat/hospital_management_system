@@ -503,13 +503,30 @@ void Patient()
         int dae = 0, ooh;
         int min, chck;
 
+// && appointment_list[j].specialisation==ptr[speciaaa-1] for specific Doctor
+
+        
+        int ND = 0;
+        while (ahh - 1 > 0 && ND + 1 < num_doctors)
+        {
+            if (doctor_list[ND].specialisation != doctor_list[ND + 1].specialisation)
+            {
+                ahh--;
+            }
+            ND++;
+        }
+        min = ND;
+        for (; ND + 1 < num_doctors && doctor_list[ND].specialisation == doctor_list[ND + 1].specialisation; ND++)
+            if (doctor_list[ND + 1].appointments < doctor_list[min].appointments)
+                min = ND + 1;
+
         printf("\n\nEnter any number to Choose from Available Time slots\n\n");
         for (int i = 0; i < num_time; i++)
         {
             chck = 1;
             for (int j = 0; j < num_appointments; j++)
             {
-                if (i == appointment_list[j].time)
+                if (i == appointment_list[j].time && doctor_list[min].id==appointment_list[j].doctor_id)
                 {
                     chck = 0;
                 }
@@ -529,7 +546,7 @@ void Patient()
             chck = 0;
             for (int j = 0; j < num_appointments; j++)
             {
-                if (ooh - 1 == appointment_list[j].time)
+                if (ooh - 1 == appointment_list[j].time && doctor_list[min].id==appointment_list[j].doctor_id)
                 {
                     chck = 1;
                 }
@@ -537,26 +554,16 @@ void Patient()
 
             if (ooh > num_time || ooh < 1 || chck)
             {
+                if(chck)
+                printf("Slot Alrady Booked");
+                else
                 printf("wrong input, try again");
                 continue;
             }
             break;
         }
-        int ND = 0;
-        while (ahh - 1 > 0 && ND + 1 < num_doctors)
-        {
-            if (doctor_list[ND].specialisation != doctor_list[ND + 1].specialisation)
-            {
-                ahh--;
-            }
-            ND++;
-        }
-        min = ND;
-        for (; ND + 1 < num_doctors && doctor_list[ND].specialisation == doctor_list[ND + 1].specialisation; ND++)
-            if (doctor_list[ND + 1].appointments < doctor_list[min].appointments)
-                min = ND + 1;
-
-        num_appointments++;
+        
+                num_appointments++;
 
         appointment_list = realloc(appointment_list, num_appointments * sizeof(struct Appointment));
         appointment_list[num_appointments - 1].time = ooh - 1;
