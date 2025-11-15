@@ -172,7 +172,7 @@ void clean(int which)
         patient_list = NULL;
         num_patient = 0;
     }
-    else if (which==3)
+    else if (which == 3)
     {
         fp = fopen("appointment.dat", "wb");
         fclose(fp);
@@ -180,7 +180,6 @@ void clean(int which)
         appointment_list = NULL;
         num_appointments = 0;
     }
-    
 }
 
 void sorrt()
@@ -283,7 +282,7 @@ void Doctor(int i)
                 scanf("%f", &doct.charge);
                 doctor_list[ind] = doct;
 
-                doctor_list[ind].appointments=0;
+                doctor_list[ind].appointments = 0;
             }
             else
             {
@@ -292,10 +291,10 @@ void Doctor(int i)
             sor_t = 0;
             break;
         case 3:
-        printf("Enter Id to remove doctor");
-        scanf("%d", &id);
-        id = abs(id);
-        
+            printf("Enter Id to remove doctor");
+            scanf("%d", &id);
+            id = abs(id);
+
             ind = -1;
             for (int i = 0; i < num_doctors; i++)
             {
@@ -327,22 +326,25 @@ void Doctor(int i)
             return;
         }
 
-        for (int i = 0; i < num_appointments; i++)
+        if (a == 2 || a == 3)
         {
-            if(appointment_list[i].doctor_id==id){
-
-                for (int j = i; j < num_appointments - 1; j++)
+            for (int i = 0; i < num_appointments; i++)
+            {
+                if (appointment_list[i].doctor_id == id)
                 {
-                    appointment_list[i] = appointment_list[i + 1];
+
+                    for (int j = i; j < num_appointments - 1; j++)
+                    {
+                        appointment_list[i] = appointment_list[i + 1];
+                    }
+                    num_appointments--;
+                    if (num_appointments != 0)
+                        appointment_list = realloc(appointment_list, num_appointments * sizeof(struct Appointment));
+                    else
+                        clean(3);
                 }
-                num_appointments--;
-                if (num_appointments != 0)
-                    appointment_list = realloc(appointment_list, num_appointments* sizeof(struct Appointment));
-                else
-                    clean(3);
             }
         }
-        
 
         printf("\n\nAdd/Edit/Remove Again?\n1:yes\nanything else:no");
 
@@ -532,9 +534,8 @@ void Patient()
         int dae = 0, ooh;
         int min, chck;
 
-// && appointment_list[j].specialisation==ptr[speciaaa-1] for specific Doctor
+        // && appointment_list[j].specialisation==ptr[speciaaa-1] for specific Doctor
 
-        
         int ND = 0;
         while (ahh - 1 > 0 && ND + 1 < num_doctors)
         {
@@ -548,6 +549,7 @@ void Patient()
         for (; ND + 1 < num_doctors && doctor_list[ND].specialisation == doctor_list[ND + 1].specialisation; ND++)
             if (doctor_list[ND + 1].appointments < doctor_list[min].appointments)
                 min = ND + 1;
+        doctor_list[min].appointments++;
 
         printf("\n\nEnter any number to Choose from Available Time slots\n\n");
         for (int i = 0; i < num_time; i++)
@@ -555,18 +557,20 @@ void Patient()
             chck = 1;
             for (int j = 0; j < num_appointments; j++)
             {
-                if (i == appointment_list[j].time && doctor_list[min].id==appointment_list[j].doctor_id)
+                if (i == appointment_list[j].time && doctor_list[min].id == appointment_list[j].doctor_id)
                 {
                     chck = 0;
                 }
             }
             if (chck)
-                printf("%-3d for: %-5.2f, %d, %d            ", i + 1, time_list[i].hour, time_list[i].date, time_list[i].month);
-            dae++;
-            if (dae == 3)
             {
-                printf("\n");
-                dae = 0;
+                printf("%-3d for: %-5.2f, %d, %d            ", i + 1, time_list[i].hour, time_list[i].date, time_list[i].month);
+                dae++;
+                if (dae == 3)
+                {
+                    printf("\n");
+                    dae = 0;
+                }
             }
         }
         while (1)
@@ -575,7 +579,7 @@ void Patient()
             chck = 0;
             for (int j = 0; j < num_appointments; j++)
             {
-                if (ooh - 1 == appointment_list[j].time && doctor_list[min].id==appointment_list[j].doctor_id)
+                if (ooh - 1 == appointment_list[j].time && doctor_list[min].id == appointment_list[j].doctor_id)
                 {
                     chck = 1;
                 }
@@ -583,16 +587,16 @@ void Patient()
 
             if (ooh > num_time || ooh < 1 || chck)
             {
-                if(chck)
-                printf("Slot Alrady Booked");
+                if (chck)
+                    printf("Slot Alrady Booked");
                 else
-                printf("wrong input, try again");
+                    printf("wrong input, try again");
                 continue;
             }
             break;
         }
-        
-                num_appointments++;
+
+        num_appointments++;
 
         appointment_list = realloc(appointment_list, num_appointments * sizeof(struct Appointment));
         appointment_list[num_appointments - 1].time = ooh - 1;
