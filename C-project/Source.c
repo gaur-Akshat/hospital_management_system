@@ -172,6 +172,15 @@ void clean(int which)
         patient_list = NULL;
         num_patient = 0;
     }
+    else if (which==3)
+    {
+        fp = fopen("appointment.dat", "wb");
+        fclose(fp);
+        free(appointment_list);
+        appointment_list = NULL;
+        num_appointments = 0;
+    }
+    
 }
 
 void sorrt()
@@ -273,6 +282,8 @@ void Doctor(int i)
                 printf("Enter charge: ");
                 scanf("%f", &doct.charge);
                 doctor_list[ind] = doct;
+
+                doctor_list[ind].appointments=0;
             }
             else
             {
@@ -281,11 +292,11 @@ void Doctor(int i)
             sor_t = 0;
             break;
         case 3:
+        printf("Enter Id to remove doctor");
+        scanf("%d", &id);
+        id = abs(id);
+        
             ind = -1;
-            printf("Enter Id to remove doctor");
-            scanf("%d", &id);
-            id = abs(id);
-
             for (int i = 0; i < num_doctors; i++)
             {
                 if (doctor_list[i].id == id)
@@ -315,6 +326,24 @@ void Doctor(int i)
         default:
             return;
         }
+
+        for (int i = 0; i < num_appointments; i++)
+        {
+            if(appointment_list[i].doctor_id==id){
+
+                for (int j = i; j < num_appointments - 1; j++)
+                {
+                    appointment_list[i] = appointment_list[i + 1];
+                }
+                num_appointments--;
+                if (num_appointments != 0)
+                    appointment_list = realloc(appointment_list, num_appointments* sizeof(struct Appointment));
+                else
+                    clean(3);
+            }
+        }
+        
+
         printf("\n\nAdd/Edit/Remove Again?\n1:yes\nanything else:no");
 
         scanf("%d", &i);
