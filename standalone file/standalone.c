@@ -708,7 +708,7 @@ int main()
                 case 6: //CLEAN!!!!
                     int conf = 0, which;
 
-                    printf("\n\nWhich data?\n1: Doctor Data\n2: Patient Data\nanything else:none");
+                    printf("\n\nWhich data?\n1: Doctor Data\n2: Patient Data\n3: Appointment Data\nanything else:none");
                     scanf("%d", &which);
 
                     if (which == 1 || which == 2 || which==3)
