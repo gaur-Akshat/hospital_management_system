@@ -165,6 +165,11 @@ void clean(int which)
         free(doctor_list);
         doctor_list = NULL;
         num_doctors = 0;
+        fp = fopen("appointment.dat", "wb");
+        fclose(fp);
+        free(appointment_list);
+        appointment_list = NULL;
+        num_appointments = 0;
     }
     else if (which == 2)
     {
@@ -173,6 +178,11 @@ void clean(int which)
         free(patient_list);
         patient_list = NULL;
         num_patient = 0;
+        fp = fopen("appointment.dat", "wb");
+        fclose(fp);
+        free(appointment_list);
+        appointment_list = NULL;
+        num_appointments = 0;
     }
     else if (which == 3)
     {
@@ -207,12 +217,12 @@ void sorrt()
 void Doctor(int i)
 {
     struct Doctor doct;
-    int id, ind;
+    int id=-1918, ind;
     char str[50];
     switch (i)
     {
     case 1:
-        int a;
+        int a=0;
         printf("\n\nEnter 1 for: Add Doctor\nEnter 2 for: Edit Doctor\nEnter 3 for: Remove Doctor\nEnter anything else for: Previous Selection");
         scanf("%d", &a);
         switch (a)
@@ -232,12 +242,12 @@ void Doctor(int i)
                 {
                     if (doctor_list[i].id == doct.id)
                     {
-                        printf("\n\nId Duplicate, Try again"); 
+                        printf("\n\nId Duplicate, Try again");
                         foo = 1;
                         break;
                     }
                 }
-            }//previously we have seen this logic
+            } // previously we have seen this logic
 
             printf("Enter Name: ");
             scanf(" %49[^\n]", doct.name);
@@ -250,7 +260,7 @@ void Doctor(int i)
 
             doct.appointments = 0;
 
-            doctor_list[num_doctors - 1] = doct; //assign
+            doctor_list[num_doctors - 1] = doct; // assign
 
             sor_t = 0;
             break;
@@ -267,10 +277,10 @@ void Doctor(int i)
                     ind = i;
                     break;
                 }
-            }//ind: index of ID in doctor list
+            } // ind: index of ID in doctor list
             if (ind != -1)
             {
-                printf("\n\n%d\t%49s\t%49s\t%f\n\n", doctor_list[ind].id, doctor_list[ind].name, doctor_list[ind].specialisation, doctor_list[ind].charge);
+                printf("\n\n%d\t%s\t%s\t%f\n\n", doctor_list[ind].id, doctor_list[ind].name, doctor_list[ind].specialisation, doctor_list[ind].charge);
 
                 doct.id = id;
 
@@ -284,7 +294,7 @@ void Doctor(int i)
                 scanf("%f", &doct.charge);
                 doctor_list[ind] = doct;
 
-                doctor_list[ind].appointments = 0; //simple stuff
+                doctor_list[ind].appointments = 0; // simple stuff
             }
             else
             {
@@ -356,11 +366,11 @@ void Doctor(int i)
             Doctor(1);
         break;
 
-    case 2: 
+    case 2:
         if (doctor_list != NULL)
         {
             if (sor_t == 0)
-                sorrt(); //Sort list Speciation wise so we can easily print...
+                sorrt(); // Sort list Speciation wise so we can easily print...
             strcpy(str, doctor_list[0].specialisation);
             printf("%s:\n", str);
             for (int i = 0; i < num_doctors; i++)
@@ -368,7 +378,7 @@ void Doctor(int i)
                 if (strcmp(str, doctor_list[i].specialisation) == 0)
                 {
 
-                    printf("\t%d\t%s\t%f\n", doctor_list[i].id, doctor_list[i].name, doctor_list[i].charge);
+                    printf("\t%d\t%-20s\t%f\n", doctor_list[i].id, doctor_list[i].name, doctor_list[i].charge);
                 }
                 else
                 {
@@ -391,7 +401,7 @@ void Doctor(int i)
 
 void Patient()
 {
-    int b, id;
+    int b=0, id=-1918;
     char str[50];
     char **ptr = NULL;
 
@@ -401,19 +411,19 @@ void Patient()
     if (b == 1)
     {
         struct Patient s;
-        patient_list = realloc(patient_list, sizeof(struct Patient) * ++num_patient); //since patient choose 1(register)
+        patient_list = realloc(patient_list, sizeof(struct Patient) * ++num_patient); // since patient choose 1(register)
 
         printf("Enter ID: ");
         int foo = 1;
         while (foo)
         {
             scanf("%d", &id);
-            id = abs(id); //All ID's are abs() after input
-            patient_list[num_patient - 1].id = id; //register
-            foo = 0; 
+            id = abs(id);                          // All ID's are abs() after input
+            patient_list[num_patient - 1].id = id; // register
+            foo = 0;
             for (int i = 0; i < num_patient - 1; i++)
             {
-                if (patient_list[i].id == patient_list[num_patient - 1].id) //checking for dups
+                if (patient_list[i].id == patient_list[num_patient - 1].id) // checking for dups
                 {
                     printf("\n\nId Duplicate, Try again");
                     foo = 1;
@@ -423,16 +433,16 @@ void Patient()
         }
 
         printf("Enter Name: ");
-        scanf(" %49[^\n]", patient_list[num_patient - 1].name);//register
+        scanf(" %49[^\n]", patient_list[num_patient - 1].name); // register
 
         printf("Enter Age: ");
-        scanf("%d", &patient_list[num_patient - 1].age);//register
+        scanf("%d", &patient_list[num_patient - 1].age); // register
 
         while (1)
         {
 
             printf("Enter Gender:\n1: Male\n2: Female\n3: Other");
-            scanf("%d", &patient_list[num_patient - 1].gender);//register
+            scanf("%d", &patient_list[num_patient - 1].gender); // register
 
             if (patient_list[num_patient - 1].gender != 1 && patient_list[num_patient - 1].gender != 2 && patient_list[num_patient - 1].gender != 3)
             {
@@ -443,9 +453,9 @@ void Patient()
             break;
         }
         printf("Add Medical Notes: ");
-        scanf(" %499[^\n]", patient_list[num_patient - 1].medical_notes);//register
+        scanf(" %499[^\n]", patient_list[num_patient - 1].medical_notes); // register
     }
-    else if (b == 2) //Login
+    else if (b == 2) // Login
     {
         if (patient_list != NULL)
         {
@@ -468,17 +478,17 @@ void Patient()
                 }
                 if (foo == 1)
                     printf("\n\nID not Found, try again, or Press -1 to EXIT");
-            }//We successfully got the login ID
+            } // We successfully got the login ID
         }
         else
         {
             printf("\n\nPatient list is Empty, Going back");
-            return;//going back to main
+            return; // going back to main
         }
     }
     else
     {
-        return; //going back to main
+        return; // going back to main
     }
     int bsd = 1;
     for (int i = 0; i < num_appointments; i++)
@@ -486,143 +496,148 @@ void Patient()
         if (id == appointment_list[i].patient_id) // Check if user Already is registered
         {
             printf("You have already been Registered here are your Appointment details:\n\n");
-            printf("\n\nDoctorID        PatientID       Specialisation  TimeSlot       Charge\n");
+            printf("\n\nDoctorID        PatientID       Specialisation  TimeSlot           Charge\n");
 
-            printf("%d\t\t%d\t\t%s\t\t%-5.2f, %d, %d\t\t%f\n", appointment_list[i].doctor_id, appointment_list[i].patient_id, appointment_list[i].specialisation, time_list[appointment_list[i].time].hour, time_list[appointment_list[i].time].date, time_list[appointment_list[i].time].month, appointment_list[i].charge);
+            printf("%d\t\t%d\t\t%s\t\t%-5.2f, %d, %d    \t%f\n", appointment_list[i].doctor_id, appointment_list[i].patient_id, appointment_list[i].specialisation, time_list[appointment_list[i].time].hour, time_list[appointment_list[i].time].date, time_list[appointment_list[i].time].month, appointment_list[i].charge);
 
             bsd = 0;
         }
     }
-    if (doctor_list != NULL && bsd) //bsd checks if already registered
+    if (bsd)
     {
 
-        if (sor_t == 0)
-            sorrt();
-
-        speciaaa = 1;
-        ptr = realloc(ptr, speciaaa * sizeof(char *));
-        ptr[speciaaa - 1] = malloc(50);
-        strcpy(ptr[speciaaa - 1], doctor_list[0].specialisation);
-        strcpy(str, doctor_list[0].specialisation);
-
-        for (int i = 0; i < num_doctors; i++)
+        if (doctor_list != NULL) // bsd checks if already registered
         {
-            if (strcmp(str, doctor_list[i].specialisation) != 0)//increament speciaaa as soon as we detect Specialisation change
-            {
-                speciaaa++;
-                ptr = realloc(ptr, speciaaa * sizeof(char *)); // capacity of ptr to hold n pointers
-                ptr[speciaaa - 1] = malloc(50);                // ptr's nth pointer's memory
-                strcpy(ptr[speciaaa - 1], doctor_list[i].specialisation);
-            }
-        }
 
-        printf("Enter any of the number from 1 to %d to get assigned to that speciality Doctor\n", speciaaa);
-        int ahh;
-        for (int i = 0; i < speciaaa; i++)
-            printf("\n%d for:%s", i + 1, *(ptr + i)); //prints all specialisation to chose from
-        while (1)
-        {
-            scanf("%d", &ahh);
-            if (ahh > speciaaa || ahh < 1)
-            {
-                printf("wrong input");
-                continue;
-            }
-            break;
-        }
+            if (sor_t == 0)
+                sorrt();
 
-        for (int i = 0; i < speciaaa; i++)
-            free(ptr[i]);
-        free(ptr); //freeeeeeeeeeee
-        int dae = 0, ooh;
-        int min, chck;
+            speciaaa = 1;
+            ptr = realloc(ptr, speciaaa * sizeof(char *));
+            ptr[speciaaa - 1] = malloc(50);
+            strcpy(ptr[speciaaa - 1], doctor_list[0].specialisation);
+            strcpy(str, doctor_list[0].specialisation);
 
-        int ND = 0;
-        while (ahh - 1 > 0 && ND + 1 < num_doctors) 
-        {
-            if (doctor_list[ND].specialisation != doctor_list[ND + 1].specialisation)
+            for (int i = 0; i < num_doctors; i++)
             {
-                ahh--;
-            }
-            ND++; //This will hold the index for 1st index of nth specialisation 
-        }
-        min = ND;
-        for (; ND + 1 < num_doctors && doctor_list[ND].specialisation == doctor_list[ND + 1].specialisation; ND++)
-            if (doctor_list[ND + 1].appointments < doctor_list[min].appointments)
-                min = ND + 1; //this'll hold the Doctor index with min appointments
-        doctor_list[min].appointments++; //simples enough right?
-
-        printf("\n\nEnter any number to Choose from Available Time slots\n\n");
-        for (int i = 0; i < num_time; i++)
-        {
-            chck = 1;
-            for (int j = 0; j < num_appointments; j++)
-            {
-                if (i == appointment_list[j].time && doctor_list[min].id == appointment_list[j].doctor_id)
-                {//checks if doctor already have appointement at cosen time
-                    chck = 0;
-                }
-            }
-            if (chck)
-            {
-                printf("%-3d for: %-5.2f, %d, %d            ", i + 1, time_list[i].hour, time_list[i].date, time_list[i].month);
-                dae++;
-                if (dae == 3)
+                if (strcmp(str, doctor_list[i].specialisation) != 0) // increament speciaaa as soon as we detect Specialisation change
                 {
-                    printf("\n");
-                    dae = 0;
-                }
-            }
-        }
-        while (1)
-        {
-            scanf("%d", &ooh);
-            chck = 0;
-            for (int j = 0; j < num_appointments; j++)
-            {
-                if (ooh - 1 == appointment_list[j].time && doctor_list[min].id == appointment_list[j].doctor_id)
-                {//similar to previous loop
-                    chck = 1;
+                    speciaaa++;
+                    ptr = realloc(ptr, speciaaa * sizeof(char *)); // capacity of ptr to hold n pointers
+                    ptr[speciaaa - 1] = malloc(50);                // ptr's nth pointer's memory
+                    strcpy(ptr[speciaaa - 1], doctor_list[i].specialisation);
                 }
             }
 
-            if (ooh > num_time || ooh < 1 || chck) //simple enough
+            printf("Enter any of the number from 1 to %d to get assigned to that speciality Doctor\n", speciaaa);
+            int ahh=-1;
+            for (int i = 0; i < speciaaa; i++)
+                printf("\n%d for:%s", i + 1, *(ptr + i)); // prints all specialisation to chose from
+            while (1)
             {
+                scanf("%d", &ahh);
+                if (ahh > speciaaa || ahh < 1)
+                {
+                    printf("wrong input");
+                    continue;
+                }
+                break;
+            }
+
+            for (int i = 0; i < speciaaa; i++)
+                free(ptr[i]);
+            free(ptr); // freeeeeeeeeeee
+            int dae = 0, ooh=-1;
+            int min, chck;
+
+            int ND = 0;
+            while (ahh - 1 > 0 && ND + 1 < num_doctors)
+            {
+                if (strcmp(doctor_list[ND].specialisation, doctor_list[ND + 1].specialisation) != 0)
+                {
+                    // printf("\n%s\n",doctor_list[ND].specialisation);
+                    // printf("%s\n",doctor_list[ND+1].specialisation);
+                    ahh--;
+                }
+                ND++; // This will hold the index for 1st index of nth specialisation
+            }
+            min = ND;
+            for (; ND + 1 < num_doctors && doctor_list[ND].specialisation == doctor_list[ND + 1].specialisation; ND++)
+                if (doctor_list[ND + 1].appointments < doctor_list[min].appointments)
+                    min = ND + 1;            // this'll hold the Doctor index with min appointments
+            doctor_list[min].appointments++; // simples enough right?
+
+            printf("\n\nEnter any number to Choose from Available Time slots\n\n");
+            for (int i = 0; i < num_time; i++)
+            {
+                chck = 1;
+                for (int j = 0; j < num_appointments; j++)
+                {
+                    if (i == appointment_list[j].time && doctor_list[min].id == appointment_list[j].doctor_id)
+                    { // checks if doctor already have appointement at cosen time
+                        chck = 0;
+                    }
+                }
                 if (chck)
-                    printf("Slot Alrady Booked");
-                else
-                    printf("wrong input, try again");
-                continue;
+                {
+                    printf("%-3d for: %-5.2f, %d, %d            ", i + 1, time_list[i].hour, time_list[i].date, time_list[i].month);
+                    dae++;
+                    if (dae == 3)
+                    {
+                        printf("\n");
+                        dae = 0;
+                    }
+                }
             }
-            break;
+            while (1)
+            {
+                scanf("%d", &ooh);
+                chck = 0;
+                for (int j = 0; j < num_appointments; j++)
+                {
+                    if (ooh - 1 == appointment_list[j].time && doctor_list[min].id == appointment_list[j].doctor_id)
+                    { // similar to previous loop
+                        chck = 1;
+                    }
+                }
+
+                if (ooh > num_time || ooh < 1 || chck) // simple enough
+                {
+                    if (chck)
+                        printf("Slot Alrady Booked");
+                    else
+                        printf("wrong input, try again");
+                    continue;
+                }
+                break;
+            }
+
+            num_appointments++;
+
+            appointment_list = realloc(appointment_list, num_appointments * sizeof(struct Appointment));
+            appointment_list[num_appointments - 1].time = ooh - 1;
+            appointment_list[num_appointments - 1].charge = doctor_list[min].charge;
+            appointment_list[num_appointments - 1].patient_id = id; // LMAO I previously wrote: patient_list[min].id
+            appointment_list[num_appointments - 1].doctor_id = doctor_list[min].id;
+            strcpy(appointment_list[num_appointments - 1].specialisation, doctor_list[min].specialisation);
+
+            // Here we assign Appointment info, using the inputs and calculations
+
+            printf("\n\nDear Patient, thankyou for your patience, You have been Successfully Appointed with \"Mr/Mrs\"%s with Specialisation in %s at Time Slot: ", doctor_list[min].name, appointment_list[num_appointments - 1].specialisation);
+
+            printf("%-5.2f, %d, %d", time_list[ooh - 1].hour, time_list[ooh - 1].date, time_list[ooh - 1].month);
+            printf(" The Total charge would be %.2f BUCKS", appointment_list[num_appointments - 1].charge);
         }
-
-        num_appointments++;
-
-        appointment_list = realloc(appointment_list, num_appointments * sizeof(struct Appointment));
-        appointment_list[num_appointments - 1].time = ooh - 1;
-        appointment_list[num_appointments - 1].charge = doctor_list[min].charge;
-        appointment_list[num_appointments - 1].patient_id = id; // LMAO I previously wrote: patient_list[min].id
-        appointment_list[num_appointments - 1].doctor_id = doctor_list[min].id;
-        strcpy(appointment_list[num_appointments - 1].specialisation, doctor_list[min].specialisation);
-
-        //Here we assign Appointment info, using the inputs and calculations
-
-
-        printf("\n\nDear Patient, thankyou for your patience, You have been Successfully Appointed with \"Mr/Mrs\"%s with Specialisation in%s at Time Slot: ", doctor_list[min].name, appointment_list[num_appointments - 1].specialisation);
-
-        printf("%-5.2f, %d, %d", time_list[ooh - 1].hour, time_list[ooh - 1].date, time_list[ooh - 1].month);
-        printf(" The Total charge would be %.2f BUCKS", appointment_list[num_appointments - 1].charge);
+        else
+            printf("Sorry, No Doctors currently Available, Try again in future with PATIENT LOGIN Option");
     }
-    else
-        printf("Sorry, No Doctors currently Available, Try again in future with PATIENT LOGIN Option");
 }
 
 int main()
 {
     load_dataaaaaaa(); // Load the data from binary File and create if doesn't exist, (I'd suggest go there)
 
-    int a, flag;  //both are for switch
+    int a=-1, flag; // both are for switch
     while (1)
     {
         printf("\n\nEnter 1 for: Patient Features\nEnter 2 for: Admin Features\nEnter anything else for: Exit");
@@ -630,7 +645,7 @@ int main()
 
         if (a == 1)
         {
-            Patient(); //Everything Patient is there (Go 👆)
+            Patient(); // Everything Patient is there (Go 👆)
         }
         else if (a == 2)
         {
@@ -652,7 +667,7 @@ int main()
                 printf("Wrong Password, going back");
                 continue;
             }
-            int c;
+            int c=-1;
 
             do
             {
@@ -663,30 +678,30 @@ int main()
                 switch (c)
                 {
                 case 1:
-                    Doctor(1); //DOCTOR add, edit, delete
+                    Doctor(1); // DOCTOR add, edit, delete
                     break;
-                case 2: //print patients
-                    printf("\n\nID      Name    Age     Gender   Medical_Notes\n");
+                case 2: // print patients
+                    printf("\n\nID      Name            Age     Gender   Medical_Notes\n");
 
                     for (int i = 0; i < num_patient; i++)
                     {
-                        printf("%d\t%s\t%d\t%s\t%s\n", patient_list[i].id, patient_list[i].name, patient_list[i].age, patient_list[i].gender == 1 ? "Male" : patient_list[i].gender == 2 ? "Female"
-                                                                                                                                                                                         : "Other",
+                        printf("%d\t%-16s%d\t%-9s%s\n", patient_list[i].id, patient_list[i].name, patient_list[i].age, patient_list[i].gender == 1 ? "Male" : patient_list[i].gender == 2 ? "Female"
+                                                                                                                                                                                          : "Other",
                                patient_list[i].medical_notes);
                     }
                     break;
 
-                case 3: 
-                    Doctor(2); //check Case 2
+                case 3:
+                    Doctor(2); // check Case 2
                     break;
-                case 4: //Print
-                    printf("\n\nDoctorID        PatientID       Specialisation  TimeSlot       Charge\n");
+                case 4: // Print
+                    printf("\n\nDoctorID        PatientID       Specialisation         TimeSlot                  Charge\n");
 
                     if (appointment_list != NULL)
                     {
                         for (int i = 0; i < num_appointments; i++)
                         {
-                            printf("%d\t\t%d\t\t%s\t\t%-5.2f, %d, %d\t\t\t %f\n", appointment_list[i].doctor_id, appointment_list[i].patient_id, appointment_list[i].specialisation, time_list[appointment_list[i].time].hour, time_list[appointment_list[i].time].date, time_list[appointment_list[i].time].month, appointment_list[i].charge);
+                            printf("%d\t\t%d\t\t%-23s%-5.2f, %d, %-14d %f\n", appointment_list[i].doctor_id, appointment_list[i].patient_id, appointment_list[i].specialisation, time_list[appointment_list[i].time].hour, time_list[appointment_list[i].time].date, time_list[appointment_list[i].time].month, appointment_list[i].charge);
                         }
                     }
                     else
@@ -696,7 +711,7 @@ int main()
                     break;
                     break;
 
-                case 5: //Password Reset
+                case 5: // Password Reset
                     printf("\n\nEnter new password");
                     scanf(" %49[^\n]", pass);
                     fp = fopen("pass.txt", "w");
@@ -705,23 +720,23 @@ int main()
                     printf("Password Updated");
 
                     break;
-                case 6: //CLEAN!!!!
-                    int conf = 0, which;
+                case 6: // CLEAN!!!!
+                    int conf = 0, which=-1;
 
                     printf("\n\nWhich data?\n1: Doctor Data\n2: Patient Data\n3: Appointment Data\nanything else:none");
                     scanf("%d", &which);
 
-                    if (which == 1 || which == 2 || which==3)
+                    if (which == 1 || which == 2 || which == 3)
                     {
                         printf("\n\nAre You Sure?\n1:yes\nanything else:no");
                         scanf("%d", &conf);
-                        if (!(conf - 1)) //Confirm
+                        if (!(conf - 1)) // Confirm
                             clean(which);
                     }
                     break;
 
                 default:
-                    flag = 1; //exit
+                    flag = 1; // exit
                     break;
                 }
                 if (flag == 1)
@@ -729,13 +744,13 @@ int main()
 
             } while (1);
         }
-        else 
+        else
         {
             printf("Files Saved, Exiting");
             break;
         }
     }
 
-    upload_dataaaaaaa(); //dear user your data is safe😈
+    upload_dataaaaaaa(); // dear user your data is safe😈
     return 0;
 }

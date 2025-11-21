@@ -217,12 +217,12 @@ void sorrt()
 void Doctor(int i)
 {
     struct Doctor doct;
-    int id, ind;
+    int id=-1918, ind;
     char str[50];
     switch (i)
     {
     case 1:
-        int a;
+        int a=0;
         printf("\n\nEnter 1 for: Add Doctor\nEnter 2 for: Edit Doctor\nEnter 3 for: Remove Doctor\nEnter anything else for: Previous Selection");
         scanf("%d", &a);
         switch (a)
@@ -401,7 +401,7 @@ void Doctor(int i)
 
 void Patient()
 {
-    int b, id;
+    int b=0, id=-1918;
     char str[50];
     char **ptr = NULL;
 
@@ -530,7 +530,7 @@ void Patient()
             }
 
             printf("Enter any of the number from 1 to %d to get assigned to that speciality Doctor\n", speciaaa);
-            int ahh;
+            int ahh=-1;
             for (int i = 0; i < speciaaa; i++)
                 printf("\n%d for:%s", i + 1, *(ptr + i)); // prints all specialisation to chose from
             while (1)
@@ -547,7 +547,7 @@ void Patient()
             for (int i = 0; i < speciaaa; i++)
                 free(ptr[i]);
             free(ptr); // freeeeeeeeeeee
-            int dae = 0, ooh;
+            int dae = 0, ooh=-1;
             int min, chck;
 
             int ND = 0;
@@ -637,7 +637,7 @@ int main()
 {
     load_dataaaaaaa(); // Load the data from binary File and create if doesn't exist, (I'd suggest go there)
 
-    int a, flag; // both are for switch
+    int a=-1, flag; // both are for switch
     while (1)
     {
         printf("\n\nEnter 1 for: Patient Features\nEnter 2 for: Admin Features\nEnter anything else for: Exit");
@@ -667,7 +667,7 @@ int main()
                 printf("Wrong Password, going back");
                 continue;
             }
-            int c;
+            int c=-1;
 
             do
             {
@@ -721,7 +721,7 @@ int main()
 
                     break;
                 case 6: // CLEAN!!!!
-                    int conf = 0, which;
+                    int conf = 0, which=-1;
 
                     printf("\n\nWhich data?\n1: Doctor Data\n2: Patient Data\n3: Appointment Data\nanything else:none");
                     scanf("%d", &which);
