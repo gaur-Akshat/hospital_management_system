@@ -347,7 +347,7 @@ void Doctor(int i)
 
                     for (int j = i; j < num_appointments - 1; j++)
                     {
-                        appointment_list[i] = appointment_list[i + 1];
+                        appointment_list[j] = appointment_list[j + 1];
                     }
                     num_appointments--;
                     i--;
@@ -523,6 +523,7 @@ void Patient()
                 if (strcmp(str, doctor_list[i].specialisation) != 0) // increament speciaaa as soon as we detect Specialisation change
                 {
                     speciaaa++;
+                    strcpy(str, doctor_list[i].specialisation);
                     ptr = realloc(ptr, speciaaa * sizeof(char *)); // capacity of ptr to hold n pointers
                     ptr[speciaaa - 1] = malloc(50);                // ptr's nth pointer's memory
                     strcpy(ptr[speciaaa - 1], doctor_list[i].specialisation);
