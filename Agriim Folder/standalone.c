@@ -495,8 +495,8 @@ void Patient()
     {
         if (id == appointment_list[i].patient_id) // Check if user Already is registered
         {
-            printf("You have already been Registered here are your Appointment details:\n\n");
-            printf("\n\nDoctorID        PatientID       Specialisation  TimeSlot           Charge\n");
+            printf("\n\nYou have already been Registered here are your Appointment details:\n");
+            printf("\nDoctorID        PatientID       Specialisation  TimeSlot           Charge\n");
 
             printf("%d\t\t%d\t\t%s\t\t%-5.2f, %d, %d    \t%f\n", appointment_list[i].doctor_id, appointment_list[i].patient_id, appointment_list[i].specialisation, time_list[appointment_list[i].time].hour, time_list[appointment_list[i].time].date, time_list[appointment_list[i].time].month, appointment_list[i].charge);
 
