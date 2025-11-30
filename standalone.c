@@ -632,7 +632,7 @@ void Patient()
             printf(" The Total charge would be %.2f BUCKS", appointment_list[num_appointments - 1].charge);
         }
         else
-            printf("Sorry, No Doctors currently Available, Try again in future with PATIENT LOGIN Option");
+            printf("\nSorry, No Doctors currently Available, Try again in future with PATIENT LOGIN Option");
     }
 }
 
