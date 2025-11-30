@@ -223,8 +223,9 @@ void Doctor(int i)
     {
     case 1:
         int a = 0;
-        printf("\n\nEnter 1 for: Add Doctor\nEnter 2 for: Edit Doctor\nEnter 3 for: Remove Doctor\nEnter anything else for: Previous Selection");
+        printf("\n\nEnter 1 for: Add Doctor\nEnter 2 for: Edit Doctor\nEnter 3 for: Remove Doctor\nEnter anything else for: Previous Selection\n");
         scanf("%d", &a);
+        printf("\n");
         switch (a)
         {
         case 1:
@@ -266,7 +267,7 @@ void Doctor(int i)
             break;
         case 2:
             ind = -1;
-            printf("Enter Id to edit doctor");
+            printf("Enter Id to edit doctor: ");
             scanf("%d", &id);
             id = abs(id);
 
@@ -303,7 +304,7 @@ void Doctor(int i)
             sor_t = 0;
             break;
         case 3:
-            printf("Enter Id to remove doctor");
+            printf("Enter Id to remove doctor: ");
             scanf("%d", &id);
             id = abs(id);
 
@@ -359,7 +360,7 @@ void Doctor(int i)
             }
         }
 
-        printf("\n\nAdd/Edit/Remove Again?\n1:yes\nanything else:no");
+        printf("\n\nAdd/Edit/Remove Again?\n1:yes\nanything else:no\n");
 
         scanf("%d", &i);
         if (i == 1)
@@ -405,9 +406,10 @@ void Patient()
     char str[50];
     char **ptr = NULL;
 
-    printf("\n\nEnter 1 for: Patient Register\nEnter 2 for: Patient Login\nEnter anything else: To go back");
+    printf("\n\nEnter 1 for: Patient Register\nEnter 2 for: Patient Login\nEnter anything else: To go back\n");
 
     scanf("%d", &b);
+    printf("\n");
     if (b == 1)
     {
         struct Patient s;
@@ -459,7 +461,7 @@ void Patient()
     {
         if (patient_list != NULL)
         {
-            printf("Enter Id");
+            printf("Enter Id: ");
             int foo = 1, bar;
             while (foo)
             {
@@ -477,7 +479,7 @@ void Patient()
                     }
                 }
                 if (foo == 1)
-                    printf("\n\nID not Found, try again, or Press -1 to EXIT");
+                    printf("\n\nID not Found, try again, or Press -1 to EXIT\n");
             } // We successfully got the login ID
         }
         else
@@ -536,6 +538,7 @@ void Patient()
                 printf("\n%d for:%s", i + 1, *(ptr + i)); // prints all specialisation to chose from
             while (1)
             {
+                printf("\n");
                 scanf("%d", &ahh);
                 if (ahh > speciaaa || ahh < 1)
                 {
@@ -555,11 +558,7 @@ void Patient()
             while (ahh - 1 > 0 && ND + 1 < num_doctors)
             {
                 if (strcmp(doctor_list[ND].specialisation, doctor_list[ND + 1].specialisation) != 0)
-                {
-                    // printf("\n%s\n",doctor_list[ND].specialisation);
-                    // printf("%s\n",doctor_list[ND+1].specialisation);
                     ahh--;
-                }
                 ND++; // This will hold the index for 1st index of nth specialisation
             }
             min = ND;
@@ -594,6 +593,7 @@ void Patient()
             }
             while (1)
             {
+                printf("\n");
                 scanf("%d", &ooh);
                 chck = 0;
                 for (int j = 0; j < num_appointments; j++)
@@ -644,6 +644,7 @@ int main()
     while (1)
     {
         printf("\n\nEnter 1 for: Patient Features\nEnter 2 for: Admin Features\nEnter anything else for: Exit");
+        printf("\n");
         scanf("%d", &a);
 
         if (a == 1)
@@ -675,7 +676,7 @@ int main()
             do
             {
                 flag = 0;
-                printf("\n\nEnter 1 for: Add/Edit/Delete doctor\nEnter 2 for: View all Patient\nEnter 3 for: Maintain doctor specialization wise list\nEnter 4 for: Show Appointment List\nEnter 5 for: Password reset\nEnter 6 for: Clean Files\nEnter anything else for: Go to previous options");
+                printf("\n\nEnter 1 for: Add/Edit/Delete doctor\nEnter 2 for: View all Patient\nEnter 3 for: Maintain doctor specialization wise list\nEnter 4 for: Show Appointment List\nEnter 5 for: Password reset\nEnter 6 for: Clean Files\nEnter anything else for: Go to previous options\n");
 
                 scanf("%d", &c);
                 switch (c)
@@ -684,13 +685,20 @@ int main()
                     Doctor(1); // DOCTOR add, edit, delete
                     break;
                 case 2: // print patients
-                    printf("\n\nID      Name            Age     Gender   Medical_Notes\n");
-
-                    for (int i = 0; i < num_patient; i++)
+                    if (patient_list != NULL)
                     {
-                        printf("%d\t%-16s%d\t%-9s%s\n", patient_list[i].id, patient_list[i].name, patient_list[i].age, patient_list[i].gender == 1 ? "Male" : patient_list[i].gender == 2 ? "Female"
-                                                                                                                                                                                          : "Other",
-                               patient_list[i].medical_notes);
+                        printf("\n\nID      Name            Age     Gender   Medical_Notes\n");
+
+                        for (int i = 0; i < num_patient; i++)
+                        {
+                            printf("%d\t%-16s%d\t%-9s%s\n", patient_list[i].id, patient_list[i].name, patient_list[i].age, patient_list[i].gender == 1 ? "Male" : patient_list[i].gender == 2 ? "Female"
+                                                                                                                                                                                              : "Other",
+                                   patient_list[i].medical_notes);
+                        }
+                    }
+                    else
+                    {
+                        printf("Patient List Empty");
                     }
                     break;
 
@@ -698,10 +706,10 @@ int main()
                     Doctor(2); // check Case 2
                     break;
                 case 4: // Print
-                    printf("\n\nDoctorID        PatientID       Specialisation         TimeSlot                  Charge\n");
-
                     if (appointment_list != NULL)
                     {
+                        printf("\n\nDoctorID        PatientID       Specialisation         TimeSlot                  Charge\n");
+
                         for (int i = 0; i < num_appointments; i++)
                         {
                             printf("%d\t\t%d\t\t%-23s%-5.2f, %d, %-14d %f\n", appointment_list[i].doctor_id, appointment_list[i].patient_id, appointment_list[i].specialisation, time_list[appointment_list[i].time].hour, time_list[appointment_list[i].time].date, time_list[appointment_list[i].time].month, appointment_list[i].charge);
@@ -709,13 +717,13 @@ int main()
                     }
                     else
                     {
-                        printf("Empty List");
+                        printf("Appointment List Empty");
                     }
                     break;
                     break;
 
                 case 5: // Password Reset
-                    printf("\n\nEnter new password");
+                    printf("\n\nEnter new password: ");
                     scanf(" %49[^\n]", pass);
                     fp = fopen("pass.txt", "w");
                     fprintf(fp, "%s", pass);
@@ -726,12 +734,12 @@ int main()
                 case 6: // CLEAN!!!!
                     int conf = 0, which = -1;
 
-                    printf("\n\nWhich data?\n1: Doctor Data\n2: Patient Data\n3: Appointment Data\nanything else:none");
+                    printf("\n\nWhich data?\n1: Doctor Data\n2: Patient Data\n3: Appointment Data\nanything else:none\n");
                     scanf("%d", &which);
 
                     if (which == 1 || which == 2 || which == 3)
                     {
-                        printf("\n\nAre You Sure?\n1:yes\nanything else:no");
+                        printf("\n\nAre You Sure?\n1:yes\nanything else:no\n");
                         scanf("%d", &conf);
                         if (!(conf - 1)) // Confirm
                             clean(which);
